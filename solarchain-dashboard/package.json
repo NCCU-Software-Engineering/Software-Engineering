@@ -1,0 +1,32 @@
+{
+  "name": "solarchain-dashboard",
+  "version": "1.0.0",
+  "description": "SolarChain dashboard",
+  "main": "viz.js",
+  "scripts": {
+    "build": "browserify viz.js -o main.js",
+    "dev": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomconte/solarchain-dashboard.git"
+  },
+  "author": "Thomas Conte <thomas@conte.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomconte/solarchain-dashboard/issues"
+  },
+  "homepage": "https://github.com/tomconte/solarchain-dashboard#readme",
+  "dependencies": {
+    "web3": "^0.17.0-alpha"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "web3": "^0.17.0-beta",
+    "ethereum.js":"0.2.4",
+    "jquery":"3.1.1",
+    "jquery-ui":"1.12.1",
+    "lite-server":"2.2.2",
+    "web3":"0.17.0-beta"
+  }
+}
