@@ -1,0 +1,54 @@
+pragma solidity ^0.4.0;
+contract RandomN{
+    
+    uint number=0;
+    uint random=0;
+    bool[52] array;
+    string a;
+    
+    function rand() public returns (uint num3){
+        number++;
+        random=uint(sha256(number))%52+1;
+        num3=random;
+        array[random]=false;
+        return random;
+        //return uint(sha3(nonce))%(min+max)-min;
+        //return uint(sha256(nonce))%52+1;
+        
+    }
+   
+    function add(uint n) returns(uint _number){
+        number=number+n;
+        return number;
+    }
+    
+    
+    function setarray()  returns(bool[] array1){
+        uint x=0;
+        while(x<52){
+            array[x]=true;  
+            array1[x]=array[x];
+        }
+        
+        return array1;
+    }
+    
+    function seta(string x) returns(string ss){
+        a=x;
+        ss=a;
+    }
+    function getarray() constant returns(bool[] array){
+        return array;
+    }
+    function geta() constant returns(string ss){
+       ss=a;
+    }
+    function getnum() constant returns (uint num1){
+        num1=number;
+    }
+    function getrand() constant returns (uint num2){
+        num2=random;
+    }
+
+    
+}
