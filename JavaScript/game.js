@@ -7,6 +7,7 @@ var button2 = document.getElementById("button2");
 var win = document.getElementById("win");
 var lose = document.getElementById("lose");
 var restart = document.getElementById("restart");
+var background = document.getElementById("background");
 
 function owner(number,color){
 	this.number = number;
@@ -20,7 +21,8 @@ function init(){
 	button1.style.visibility = "visible";
 	button2.style.visibility = "visible";
 	card1.src = "pic/reverse.png";
-	card2.src = "pic/reverse.png";
+	card2.src = "pic/reverse.png";	
+	
 }
 
 function big(){
