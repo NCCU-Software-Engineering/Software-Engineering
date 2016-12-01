@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js">
+    <style>
+      body {
+        padding-left: 50px;
+        padding-right: 50px;
+      }
+    </style>
+    <script type="text/javascript" src="node_modules/web3/bower/bignumber.js/bignumber.min.js"></script>
+    <script type="text/javascript" src="node_modules/web3/dist/web3-light.js"></script>
+    <script type="text/javascript">
+   
+    var Web3 = require('web3');
+    var web3 = new Web3();
+    web3.setProvider(new web3.providers.HttpProvider());
+    function watchBalance() {
+        var coinbase = web3.eth.coinbase;
+        var originalBalance = web3.eth.getBalance(coinbase).toNumber();
+        document.getElementById('coinbase').innerText = 'coinbase: ' + coinbase;
+        document.getElementById('original').innerText = ' original balance: ' + originalBalance + '    watching...';
+        web3.eth.filter('latest').watch(function() {
+            var currentBalance = web3.eth.getBalance(coinbase).toNumber();
+            document.getElementById("current").innerText = 'current: ' + currentBalance;
+            document.getElementById("diff").innerText = 'diff:    ' + (currentBalance - originalBalance);
+        });
+    }
+
+
+function test2() {
+
+
+    var Web3 = require('web3');
+    if (typeof web3 !== 'undefined') {
+  var web3 = new Web3(web3.currentProvider);
+} else {
+  // set the provider you want from Web3.providers
+  var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+}
+
+var testContract = web3.eth.contract([{"constant":true,"inputs":[],"name":"get","outputs":[{"name":"","type":"int256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"a","type":"int256"}],"name":"double","outputs":[{"name":"","type":"int256"}],"payable":false,"type":"function"}]);
+var test = testContract.new(
+   {
+     from: web3.eth.accounts[0], 
+     data: '0x6060604052600060006000505560538060186000396000f3606060405260e060020a60003504636d4ce63c811460265780636ffa1caa146040575b6002565b346002576000545b60408051918252519081900360200190f35b346002576002600435026000819055602e56', 
+     gas: '4700000'
+   }, function (e, contract){
+    console.log(e, contract);
+    if (typeof contract.address !== 'undefined') {
+         console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
+    }
+ });
+console.log(test.double(5));
+
+  }
+function test3(){
+
+console.log(test.double(5));
+}
+
+</script>
+
+  </head>
+
+  <body>
+
+  <h1>coinbase balance</h1>
+ 
+
+    <button type="button" onClick="watchBalance();">watch balance</button>
+    <button type="button" onClick="test2();">test</button>
+    <button type="button" onClick="test3();">test3</button>
+
+    <div></div>
+    <div id="coinbase"></div>
+    <div id="original"></div>
+    <div id="current"></div>
+    <div id="diff"></div>
+
+
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/jquery-ui/jquery-ui.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/web3/dist/web3.min.js"></script>
+
+
+<div>測試用的contract
+
+pragma solidity ^0.4.0;
+contract Test { 
+    int x=0;
+    function double(int a) constant returns(int) {
+        x=2*a;
+        return x;
+    } 
+    function get() constant returns(int){
+        return x;
+    }
+}
+</div>
+  </body>
+</html>
