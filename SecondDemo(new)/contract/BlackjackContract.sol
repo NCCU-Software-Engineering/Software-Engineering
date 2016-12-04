@@ -2,17 +2,25 @@ pragma solidity ^0.4.2;
 
 contract BlackjackContract {
     
-    address public ownerAddress;
-    
-    mapping (address => uint) playerBets;
-
+	// 此合約的擁有者
+    address private ownerAddress;
+	
+    // 每位玩家的賭金
+    mapping (address => uint) private playerBets;
+	
+	// 雙方卡片
     uint ownerCard;
     uint playerCard;
 	
 	uint number=0;
     uint random=0;
     bool[52] isused;
+	
+	// 事件們，用於通知前端 web3.js
+	event SetPlayerBetEvent(address from, uint256 value, uint256 timestamp);
+	event WinGameEvent(address from, uint256 value, uint256 timestamp);
     
+	// 建構子
     function BlackjackContract() {
         ownerAddress = msg.sender;
         playerBets[msg.sender] = 0;
@@ -46,32 +54,28 @@ contract BlackjackContract {
         return playerCard;
     }
     
-    function setPlayerBet(uint bet) returns(uint){
+    function setPlayerBet() payable {
         
-        //賭金不能比賭場錢多 或 賭金不能小於1 或 比他自己的錢多
-        if( bet>this.balance || 1>bet ) {
-            return 0;
-        }
-        //設定賭金
-        playerBets[msg.sender] = bet;
-        return 1;
+		playerBets[msg.sender] += msg.value;
+		
+		SetPlayerBetEvent(msg.sender, msg.value, now);
     }
     
     function playGame() {
         
-        if (isOwner()) {
-            throw;
-        }
+//        if (isOwner()) {
+//           throw;
+//        }
 
         RandomCards();
         
-        if( isPlayerWin()==1 ) {
-            //ownerMoney to playerMoney (playerBet)
-            //msg.sender.send(playerBet);
+        if( isPlayerWin() ) {
+			WinGameEvent(msg.sender, playerBets[msg.sender], now);
         }
         else {
             //playerMoney to ownerMoney (playerBet)
         }
+		playerBets[msg.sender] = 0;
     }
 
     function RandomCards() {
@@ -98,13 +102,13 @@ contract BlackjackContract {
         }
         isused[random]=true;
 		return random;
-	)
+	}
 	
-    function isPlayerWin() returns (uint) {
+    function isPlayerWin() returns (bool) {
         
         if(playerCard > ownerCard) {
-            return 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 }
