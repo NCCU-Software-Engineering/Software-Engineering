@@ -2,17 +2,28 @@ pragma solidity ^0.4.2;
 
 contract BlackjackContract {
     
-    address public ownerAddress;
-//  address public playerAddress; == msg.sender
-    
-    uint public playerBet;
-
+	// 此合約的擁有者
+    address private ownerAddress;
+	
+    // 每位玩家的賭金
+    mapping (address => uint) private playerBets;
+	
+	// 雙方卡片
     uint ownerCard;
     uint playerCard;
+	
+	uint number=0;
+    uint random=0;
+    bool[52] isused;
+	
+	// 事件們，用於通知前端 web3.js
+	event SetPlayerBetEvent(address from, uint256 value, uint256 timestamp);
+	event WinGameEvent(address from, uint256 value, uint256 timestamp);
     
+	// 建構子
     function BlackjackContract() {
         ownerAddress = msg.sender;
-        playerBet = 0;
+        playerBets[msg.sender] = 0;
     }
     function isOwner() returns (bool) {
         return (msg.sender == ownerAddress);
@@ -33,7 +44,7 @@ contract BlackjackContract {
     }
     
     function getPlayerBet() constant returns (uint){
-        return playerBet;
+        return playerBets[msg.sender];
     }
     
     function getOwnerCard() constant returns (uint){
@@ -43,40 +54,56 @@ contract BlackjackContract {
         return playerCard;
     }
     
-    function setPlayerBet(uint bet) {
+    function setPlayerBet() payable {
         
-        //賭金不能比賭場錢多 或 賭金不能小於1 或 比他自己的錢多
-        if( bet>this.balance || 1>bet ) {
-            throw;
-        }
-        //設定賭金
-        playerBet = bet;
+		playerBets[msg.sender] += msg.value;
+		
+		SetPlayerBetEvent(msg.sender, msg.value, now);
     }
     
     function playGame() {
         
-        if (isOwner()) {
-            throw;
-        }
+//        if (isOwner()) {
+//           throw;
+//        }
 
         RandomCards();
         
         if( isPlayerWin() ) {
-            //ownerMoney to playerMoney (playerBet)
-            //msg.sender.send(playerBet);
+			WinGameEvent(msg.sender, playerBets[msg.sender], now);
         }
         else {
             //playerMoney to ownerMoney (playerBet)
         }
+		playerBets[msg.sender] = 0;
     }
 
     function RandomCards() {
-        
-        //待完成
-        ownerCard = 2;
-        playerCard = 3;
+
+        ownerCard = Random();
+        playerCard = Random();
     }
 
+	function Random() returns (uint) {
+	
+        uint cards=0;
+        for (uint i=0;i<52;i++){
+            if (isused[i]){cards++;}
+        }
+        if (cards==52){
+            throw;
+        }
+        
+        random=(uint(sha256(number))+uint(block.blockhash(block.number-1)))%52;
+        while(isused[random]){
+        number++;
+        random=(uint(sha256(number))+uint(block.blockhash(block.number-1)))%52;
+        
+        }
+        isused[random]=true;
+		return random;
+	}
+	
     function isPlayerWin() returns (bool) {
         
         if(playerCard > ownerCard) {
