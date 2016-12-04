@@ -35,7 +35,7 @@ var lose = document.getElementById("lose");
 
 var button_big = document.getElementById("button_big");
 var button_small = document.getElementById("button_small");
-var button_restart = document.getElementById("button_restart");
+var button_start = document.getElementById("button_start");
 var button_confirm = document.getElementById("button_confirm");
 
 var frm = document.getElementById("frm1");
@@ -45,7 +45,7 @@ var bet = document.getElementById("bet");
 
 button_big.addEventListener("click", big);
 button_small.addEventListener("click", small);
-button_restart.addEventListener("click", init);
+button_start.addEventListener("click", init);
 button_confirm.addEventListener("click", conf);
 
 function owner(number){
@@ -56,8 +56,8 @@ function init(){
 	win.style.visibility = "hidden";
 	lose.style.visibility = "hidden";
 	
-	//button_restart隱藏
-	button_restart.style.visibility = "hidden";
+	//button_start隱藏
+	button_start.style.visibility = "hidden";
 	
 	//button_big button_small隱藏
 	button_big.style.visibility = "hidden";
@@ -116,7 +116,7 @@ function big(){
 		loseGame();
 	}
 	
-	button_restart.style.visibility = "visible";
+	button_start.style.visibility = "visible";
 }
 
 function small(){
@@ -133,7 +133,7 @@ function small(){
 	else {
 		loseGame();
 	}
-	button_restart.style.visibility = "visible";
+	button_start.style.visibility = "visible";
 }
 
 function winGame() {
