@@ -36,10 +36,12 @@ contract BlackjackContract {
         return msg.sender;
     }
     
-    function getOwnerMoney() constant returns (uint) {
+    function getOwnerMoney() constant returns (uint) {?
+        //???
         return 10;
     }
     function getPlayerMoney() constant returns (uint) {
+        //???
         return 20;
     }
     
@@ -64,7 +66,7 @@ contract BlackjackContract {
     
     function RandomCards() {
         
-        //«Ý§¹¦¨
+        //???
         ownerCard.number = 2;
         playerCard.number = 1;
     }
