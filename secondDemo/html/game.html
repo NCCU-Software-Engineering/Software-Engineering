@@ -1,34 +1,45 @@
 <html>
-<head>
-<title>game</title>
-</head>
-<style>
+	<head>
+		<title>game</title>
+	</head>
+	
+	<style>
+	</style>
 
-</style>
+	<body>
 
-<body>
+		<div style="top:20px;left:550px;position:absolute;">Banker</div>
+		<div style="top:50px;left:550px;position:absolute;"><img id="card1" src="pic/reverse.png" /></div>
+		
+		<div style="top:500px;left:550px;position:absolute;"><img id="card2" src="pic/reverse.png"/></div>
+		<div style="top:600px;left:550px;position:absolute;">Player</div>
+		
+		<form style="top:350px;left:20px;position:absolute;visibility:hidden;" id="frm1" action="form_action.asp">
+		  請先輸入賭金!!!<br><br>
+		  set bet: <input type="number" name="bet"><br><br>
+		  <input type="button" onclick="()" id = "button_confirm" value="確認">
+		</form>
+		
+		<div style="top:300px;left:450px;position:absolute;visibility:hidden;">
+			<button type="button" id = "button_big" onclick = "big()"><img src="pic/big.png"></button>
+		</div>
+		<div style="top:300px;left:650px;position:absolute;visibility:hidden;">
+			<button type="button" id = "button_small" onclick = "small()"><img src="pic/small.png"></button>
+		</div>
+		
+		<div style="top:20px;left:20px;position:absolute;"><img id="Comparison" src="pic/Comparison.png"/></div>
+		
+		<div style="top:120px;left:20px;position:absolute;visibility:hidden;"><img id="win" src="pic/win.png"/></div>
+		<div style="top:220px;left:20px;position:absolute;visibility:hidden;"><img id="lose" src="pic/lose.png"/></div>
+		
+		<div style="top:400px;left:550px;position:absolute;"><button type="button" id = "button_restart" onclick = "init()"><img src="pic/restart.png"/></div>
+		
+		<div style="top:500px;left:650px;position:absolute;">your money :</div>
+		<div style="top:500px;left:750px;position:absolute;" id = "money"></div>
+		<div style="top:530px;left:650px;position:absolute;">your bet :</div>
+		<div style="top:530px;left:750px;position:absolute;" id = "bet"></div>
 
-<div style="top:20px;left:550px;position:absolute;">Banker</div>
-<div style="top:50px;left:550px;position:absolute;"><img id="card1" src="pic/reverse.png" /></div>
-<div style="top:500px;left:550px;position:absolute;"><img id="card2" src="pic/reverse.png"/></div>
-<div style="top:600px;left:550px;position:absolute;">Player</div>
-<form style="top:200px;left:550px;position:absolute;" id="frm1" action="form_action.asp">
-  Your bet: <input type="number" name="your_bet"><br><br>
-  <input type="button" onclick="gamestart()" id = "my_button" value="確認">
-</form>
-<div style="top:200px;left:550px;position:absolute;"><img id="pic1" src="pic/pic1.png"/></div>
-<div style="top:300px;left:450px;position:absolute;"><button type="button" id = "button1" onclick = "big()"><img src="pic/pic2.png"></button></div>
-<div style="top:300px;left:650px;position:absolute;"><button type="button" id = "button2" onclick = "small()"><img src="pic/pic3.png"></button></div>
-<div style="top:300px;left:550px;position:absolute;"><img id="win" src="pic/win.png"/></div>
-<div style="top:300px;left:550px;position:absolute;"><img id="lose" src="pic/lose.png"/></div>
-<div style="top:400px;left:550px;position:absolute;"><button type="button" id = "restart" onclick = "init()"><img src="pic/restart.png"/></div>
-<div style="top:500px;left:650px;position:absolute;">your money :</div>
-<div style="top:500px;left:750px;position:absolute;" id = "money"></div>
-<div style="top:530px;left:650px;position:absolute;">your bet :</div>
-<div style="top:530px;left:750px;position:absolute;" id = "bet"></div>
+		<script language="JavaScript" src = "D:\Desktop\Software-Engineering\SecondDemo\javascript\main.js"></script>
 
-<script language="JavaScript" src = "main.js"></script>
-
-
-</body>
+	</body>
 </html>
