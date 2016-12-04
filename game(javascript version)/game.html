@@ -8,12 +8,14 @@
 
 <body>
 
-<div style="top:20px;left:550px;position:absolute;">Banker</div>
+<div style="top:20px;left:550px;position:absolute;" id = "banker_address">Banker: </div>
 <div style="top:50px;left:550px;position:absolute;"><img id="card1" src="pic/reverse.png" /></div>
+<div style="top:50px;left:650px;position:absolute;">Bnaker's money :</div>
+<div style="top:50px;left:780px;position:absolute;" id = "banker_money"></div>
 <div style="top:500px;left:550px;position:absolute;"><img id="card2" src="pic/reverse.png"/></div>
-<div style="top:600px;left:550px;position:absolute;">Player</div>
+<div style="top:600px;left:550px;position:absolute;" id = "player_address">Player: </div>
 <form style="top:200px;left:550px;position:absolute;" id="frm1" action="form_action.asp">
-  Your bet: <input type="number" name="your_bet"><br><br>
+  Your bet: <input type="number" name="your_bet" min = "1"><br><br>
   <input type="button" onclick="gamestart()" id = "my_button" value="確認">
 </form>
 <div style="top:200px;left:550px;position:absolute;"><img id="pic1" src="pic/pic1.png"/></div>
