@@ -40,7 +40,8 @@ var button_confirm = document.getElementById("button_confirm");
 
 var frm = document.getElementById("frm1");
 
-var money = document.getElementById("money");
+var bankerMoney = document.getElementById("bankerMoney");
+var yourMoney = document.getElementById("yourMoney");
 var bet = document.getElementById("bet");
 
 button_big.addEventListener("click", big);
@@ -79,8 +80,9 @@ function init(){
 	frm1.style.visibility = "visible";
 	
 	//bet monry初始化
-	money.innerHTML = getOwnerMoney();
-	bet.innerHTML = 0;
+	bankerMoney.innerHTML = getOwnerMoney();
+	yourMoney.innerHTML = getPlayerMoney();
+	bet.innerHTML = 1;
 }
 function conf() {
 	console.log("conf");
