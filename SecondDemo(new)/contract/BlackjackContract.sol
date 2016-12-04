@@ -3,16 +3,19 @@ pragma solidity ^0.4.2;
 contract BlackjackContract {
     
     address public ownerAddress;
-//  address public playerAddress; == msg.sender
     
-    uint public playerBet;
+    mapping (address => uint) playerBets;
 
     uint ownerCard;
     uint playerCard;
+	
+	uint number=0;
+    uint random=0;
+    bool[52] isused;
     
     function BlackjackContract() {
         ownerAddress = msg.sender;
-        playerBet = 0;
+        playerBets[msg.sender] = 0;
     }
     function isOwner() returns (bool) {
         return (msg.sender == ownerAddress);
@@ -33,7 +36,7 @@ contract BlackjackContract {
     }
     
     function getPlayerBet() constant returns (uint){
-        return playerBet;
+        return playerBets[msg.sender];
     }
     
     function getOwnerCard() constant returns (uint){
@@ -43,14 +46,15 @@ contract BlackjackContract {
         return playerCard;
     }
     
-    function setPlayerBet(uint bet) {
+    function setPlayerBet(uint bet) returns(uint){
         
         //賭金不能比賭場錢多 或 賭金不能小於1 或 比他自己的錢多
         if( bet>this.balance || 1>bet ) {
-            throw;
+            return 0;
         }
         //設定賭金
-        playerBet = bet;
+        playerBets[msg.sender] = bet;
+        return 1;
     }
     
     function playGame() {
@@ -61,7 +65,7 @@ contract BlackjackContract {
 
         RandomCards();
         
-        if( isPlayerWin() ) {
+        if( isPlayerWin()==1 ) {
             //ownerMoney to playerMoney (playerBet)
             //msg.sender.send(playerBet);
         }
@@ -71,17 +75,36 @@ contract BlackjackContract {
     }
 
     function RandomCards() {
-        
-        //待完成
-        ownerCard = 2;
-        playerCard = 3;
+
+        ownerCard = Random();
+        playerCard = Random();
     }
 
-    function isPlayerWin() returns (bool) {
+	function Random() returns (uint) {
+	
+        uint cards=0;
+        for (uint i=0;i<52;i++){
+            if (isused[i]){cards++;}
+        }
+        if (cards==52){
+            throw;
+        }
+        
+        random=(uint(sha256(number))+uint(block.blockhash(block.number-1)))%52;
+        while(isused[random]){
+        number++;
+        random=(uint(sha256(number))+uint(block.blockhash(block.number-1)))%52;
+        
+        }
+        isused[random]=true;
+		return random;
+	)
+	
+    function isPlayerWin() returns (uint) {
         
         if(playerCard > ownerCard) {
-            return true;
+            return 1;
         }
-        return false;
+        return 0;
     }
 }
