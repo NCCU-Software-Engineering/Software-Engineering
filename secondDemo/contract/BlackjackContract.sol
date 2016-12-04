@@ -26,7 +26,7 @@ contract BlackjackContract {
         playerBet = 0;
     }
     function isOwner() returns (bool) {
-        return (msg.sender == owner);
+        return (msg.sender == ownerAddress);
     }
     
     function getOwnerAddress() constant returns (address) {
