@@ -1,6 +1,4 @@
-pragma solidity ^0.4.0;
-
-//0x55ba98ee78381f8eb78fd1abc7cfcabb7a160090
+pragma solidity ^0.4.2;
 
 contract BlackjackContract {
     
@@ -9,13 +7,8 @@ contract BlackjackContract {
     
     uint public playerBet;
 
-    Cards ownerCard;
-    Cards playerCard;
-    
-    struct Cards {
-        //0~51
-        uint number;
-    }
+    uint ownerCard;
+    uint playerCard;
     
     function BlackjackContract() {
         ownerAddress = msg.sender;
@@ -39,6 +32,17 @@ contract BlackjackContract {
         return msg.sender.balance;
     }
     
+    function getPlayerBet() constant returns (uint){
+        return playerBet;
+    }
+    
+    function getOwnerCard() constant returns (uint){
+        return ownerCard;
+    }
+    function getPlayerCard() constant returns (uint){
+        return playerCard;
+    }
+    
     function setPlayerBet(uint bet) {
         
         //賭金不能比賭場錢多 或 賭金不能小於1 或 比他自己的錢多
@@ -59,23 +63,23 @@ contract BlackjackContract {
         
         if( isPlayerWin() ) {
             //ownerMoney to playerMoney (playerBet)
-            msg.sender.send(playerBet);
+            //msg.sender.send(playerBet);
         }
         else {
             //playerMoney to ownerMoney (playerBet)
         }
     }
-    
+
     function RandomCards() {
         
         //待完成
-        ownerCard.number = 2;
-        playerCard.number = 3;
+        ownerCard = 2;
+        playerCard = 3;
     }
 
     function isPlayerWin() returns (bool) {
         
-        if(playerCard.number > ownerCard.number) {
+        if(playerCard > ownerCard) {
             return true;
         }
         return false;
