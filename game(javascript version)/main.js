@@ -2,25 +2,24 @@
 var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
-var abiArray = [{"constant":true,"inputs":[],"name":"banker","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getValue","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayer","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"player","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"bet_value","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"bet","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBanker","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"}];
-var contractAddress = "0x6c00548dada6a8c9a77f667ddc69c1a12949833b";
+var abiArray = [{"constant":true,"inputs":[],"name":"banker","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getValue","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayer","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"value","type":"uint256"}],"name":"bet","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"player_bet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBanker","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"}];
+var contractAddress = "0x0119db42323c89f96d25f2e7e3b9db10c81a0704";
 var contract = web3.eth.contract(abiArray).at(contractAddress);
 
-console.log(contract.getBanker());
-console.log(contract.getPlayer());
-console.log(web3.eth.getBalance(contract.getBanker()).toNumber());
-console.log(getMoney());
-function Setbet(value){
-	contract.bet(value , {from: web3.eth.coinbase});
+function Setbet(v){
+	contract.bet(v, { from: web3.eth.coinbase} );
 	return contract.getValue().toNumber();
-	//web3.eth.sendTransaction({from: contract.getPlayer.call(), to: contract.getBanker.call(), value: web3.toWei(contract.getValue.call().toNumber(), "ether")});
 }
 function Win(){
-	//web3.eth.sendTransaction({from: contract.getBanker.call(), to: contract.getPlayer.call(), value: web3.toWei(contract.getValue.call().toNumber() * 2, "ether")});
+	document.getElementById("banker_address").innerHTML = "Banker: " + contract.getBanker();
+	document.getElementById("player_address").innerHTML = "Player: " + contract.getPlayer();
+	document.getElementById("banker_money").innerHTML = web3.fromWei(web3.eth.getBalance(contract.getBanker()).toNumber(),"ether");
+	//web3.eth.sendTransaction({from: contract.getBanker(), to: contract.getPlayer.call(), value: web3.toWei(contract.getValue().toNumber() * 2, "ether")});
 }
 function getMoney(){
 	return web3.fromWei(web3.eth.getBalance(contract.getPlayer()).toNumber(),"ether");
 }
+
 var banker, player;
 var card1 = document.getElementById("card1");
 var card2 = document.getElementById("card2");
@@ -44,6 +43,9 @@ function owner(number,color){
 	this.color = color;
 }
 function init(){
+	document.getElementById("banker_address").innerHTML = "Banker: " + contract.getBanker();
+	document.getElementById("player_address").innerHTML = "Player: " + contract.getPlayer();
+	document.getElementById("banker_money").innerHTML = web3.fromWei(web3.eth.getBalance(contract.getBanker()).toNumber(),"ether");
 	win.style.display = "none";
 	lose.style.display = "none";
 	restart.style.visibility = "hidden";
@@ -59,7 +61,7 @@ function init(){
 
 function gamestart(){
 	frm.style.display = "none";
-	bet.innerHTML = Setbet(frm.elements[0].value);
+	bet.innerHTML = Setbet(parseInt(frm.elements[0].value));
 	money.innerHTML = getMoney();
 	img1.style.display = "block";
 	button1.style.visibility = "visible";
