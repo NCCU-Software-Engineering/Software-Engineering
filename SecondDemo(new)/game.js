@@ -52,6 +52,8 @@ function owner(number){
 	this.number = number;
 }
 function init(){
+	console.log("init");
+	
 	//win lose消失
 	win.style.visibility = "hidden";
 	lose.style.visibility = "hidden";
@@ -75,6 +77,8 @@ function init(){
 	bet.innerHTML = 0;
 }
 function conf() {
+	console.log("conf");
+	
 	if(setBet()){	
 		//隱藏輸入賭金
 		frm1.style.visibility = "hidden";
@@ -85,6 +89,7 @@ function conf() {
 }
 
 function setBet(){
+	console.log("setBet");
 	
 	var tempBet = parseInt(frm.elements[0].value);
 	
@@ -95,6 +100,7 @@ function setBet(){
 	return false;
 }
 function showCard() {
+	console.log("showCard");
 	
 	card1.src = "pic/card" + getownerrCard() + ".png";
 	card2.src = "pic/card" + getPlayerCard() + ".png";
@@ -137,11 +143,13 @@ function small(){
 }
 
 function winGame() {
+	console.log("winGame");
 	win.style.visibility = "visible";
 	lose.style.visibility = "hidden";
 }
 
 function loseGame() {
+	console.log("loseGame");
 	win.style.visibility = "hidden";
 	lose.style.visibility = "visible";
 }

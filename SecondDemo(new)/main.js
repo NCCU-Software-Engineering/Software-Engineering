@@ -14771,7 +14771,7 @@ module.exports={
         "spec": ">=6.0.0 <7.0.0",
         "type": "range"
       },
-      "C:\\Users\\dennis\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign"
+      "C:\\Users\\nidhogg5\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
@@ -14806,7 +14806,7 @@ module.exports={
   "_shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "C:\\Users\\dennis\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign",
+  "_where": "C:\\Users\\nidhogg5\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -21064,7 +21064,7 @@ var lose = document.getElementById("lose");
 
 var button_big = document.getElementById("button_big");
 var button_small = document.getElementById("button_small");
-var button_restart = document.getElementById("button_restart");
+var button_start = document.getElementById("button_start");
 var button_confirm = document.getElementById("button_confirm");
 
 var frm = document.getElementById("frm1");
@@ -21074,19 +21074,21 @@ var bet = document.getElementById("bet");
 
 button_big.addEventListener("click", big);
 button_small.addEventListener("click", small);
-button_restart.addEventListener("click", init);
+button_start.addEventListener("click", init);
 button_confirm.addEventListener("click", conf);
 
 function owner(number){
 	this.number = number;
 }
 function init(){
+	console.log("init");
+	
 	//win lose消失
 	win.style.visibility = "hidden";
 	lose.style.visibility = "hidden";
 	
-	//button_restart隱藏
-	button_restart.style.visibility = "hidden";
+	//button_start隱藏
+	button_start.style.visibility = "hidden";
 	
 	//button_big button_small隱藏
 	button_big.style.visibility = "hidden";
@@ -21104,6 +21106,8 @@ function init(){
 	bet.innerHTML = 0;
 }
 function conf() {
+	console.log("conf");
+	
 	if(setBet()){	
 		//隱藏輸入賭金
 		frm1.style.visibility = "hidden";
@@ -21114,6 +21118,7 @@ function conf() {
 }
 
 function setBet(){
+	console.log("setBet");
 	
 	var tempBet = parseInt(frm.elements[0].value);
 	
@@ -21124,6 +21129,7 @@ function setBet(){
 	return false;
 }
 function showCard() {
+	console.log("showCard");
 	
 	card1.src = "pic/card" + getownerrCard() + ".png";
 	card2.src = "pic/card" + getPlayerCard() + ".png";
@@ -21145,7 +21151,7 @@ function big(){
 		loseGame();
 	}
 	
-	button_restart.style.visibility = "visible";
+	button_start.style.visibility = "visible";
 }
 
 function small(){
@@ -21162,15 +21168,17 @@ function small(){
 	else {
 		loseGame();
 	}
-	button_restart.style.visibility = "visible";
+	button_start.style.visibility = "visible";
 }
 
 function winGame() {
+	console.log("winGame");
 	win.style.visibility = "visible";
 	lose.style.visibility = "hidden";
 }
 
 function loseGame() {
+	console.log("loseGame");
 	win.style.visibility = "hidden";
 	lose.style.visibility = "visible";
 }
