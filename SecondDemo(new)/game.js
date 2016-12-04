@@ -90,8 +90,8 @@ function conf() {
 	
 	if(setBet()){
 		console.log("setBet");
-		//隱藏輸入賭金
-		frm1.style.visibility = "hidden";
+	
+	//	frm1.style.visibility = "hidden";
 		
 		button_big.style.visibility = "visible";
 		button_small.style.visibility = "visible";
