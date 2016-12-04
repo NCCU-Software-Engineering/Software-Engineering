@@ -21109,8 +21109,9 @@ function init(){
 	frm1.style.visibility = "visible";
 	
 	//bet monry初始化
-	bankerMoney.innerHTML = getOwnerMoney();
-	yourMoney.innerHTML = getPlayerMoney();
+	bankerMoney.innerHTML = web3.fromWei(getOwnerMoney(), 'ether');
+	yourMoney.innerHTML = web3.fromWei(getPlayerMoney(), 'ether');
+	
 	bet.innerHTML = 1;
 }
 function conf() {
@@ -21132,20 +21133,17 @@ function conf() {
 function setBet(){
 	
 	var tempBet = parseInt(frm.elements[0].value);
-	console.log("tempBet:");
-	console.log(tempBet);
-	console.log(contract.setPlayerBet(tempBet));
-	
-	if(contract.setPlayerBet(tempBet)==1) {
+
+//	if(contract.setPlayerBet(tempBet)==1) {
 		bet.innerHTML = tempBet;
 		return true;
-	}
-	return false;
+//	}
+//	return false;
 }
 function showCard() {
 	console.log("showCard");
 	
-	card1.src = "pic/card" + getownerrCard() + ".png";
+	card1.src = "pic/card" + getOwnerCard() + ".png";
 	card2.src = "pic/card" + getPlayerCard() + ".png";
 	
 }
@@ -21159,12 +21157,12 @@ function big(){
 	playGame();
 	showCard();
 	
-	if(isPlayerWin()==1){
+//	if(isPlayerWin()==1){
 		winGame();
-	}
-	else {
-		loseGame();
-	}
+//	}
+//	else {
+//		loseGame();
+//	}
 	
 	button_start.style.visibility = "visible";
 }
