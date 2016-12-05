@@ -5,15 +5,11 @@ var querystring = require("querystring"),
 function start(response) {
 	console.log("Request handler 'start' was called.");
 
-	fs.readFile('game.html',function (err, data){
+	fs.readFile('../game.html',function (err, data){
 		response.writeHead(200, {'Content-Type': 'text/html','Content-Length':data.length});
         response.write(data);
         response.end();
     });
-
-//    response.writeHead(200, {"Content-Type": "text/html"});
-//    response.write(body);
-//    response.end();
 }
 
 function upload(response, request) {
@@ -32,7 +28,7 @@ function upload(response, request) {
 }
 function pic(response, request, pathname) {
   console.log("Request handler 'pic' was called.");
-  fs.readFile("/JavaScript" + pathname, "binary", function(error, file) {
+  fs.readFile("../" + pathname, "binary", function(error, file) {
     if(error) {
       response.writeHead(500, {"Content-Type": "text/plain"});
       response.write(error + "\n");
