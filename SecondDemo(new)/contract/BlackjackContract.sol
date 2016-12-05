@@ -18,7 +18,7 @@ contract BlackjackContract {
 	
 	// 事件們，用於通知前端 web3.js
 	event SetPlayerBetEvent(address from, uint256 value, uint256 timestamp);
-	event WinGameEvent(address from, uint256 value, uint256 timestamp);
+	event EndGameEvent(address from, uint256 value, uint256 timestamp);
     
 	// 建構子
     function BlackjackContract() {
@@ -70,12 +70,13 @@ contract BlackjackContract {
         RandomCards();
         
         if( isPlayerWin() ) {
-			WinGameEvent(msg.sender, playerBets[msg.sender], now);
+		    playerBets[msg.sender] *= 2;
         }
         else {
-            //playerMoney to ownerMoney (playerBet)
+            playerBets[msg.sender] = 0;
         }
-		playerBets[msg.sender] = 0;
+		
+		EndGameEvent(msg.sender, playerBets[msg.sender], now);
     }
 
     function RandomCards() {
@@ -104,11 +105,19 @@ contract BlackjackContract {
 		return random;
 	}
 	
-    function isPlayerWin() returns (bool) {
+    function isPlayerWin() constant returns (bool) {
         
         if(playerCard > ownerCard) {
             return true;
         }
         return false;
+    }
+    function version() constant returns (string){ 
+        return "1.0.1";
+    }
+    function destroy() { // so funds not locked in contract forever
+         if (msg.sender == ownerAddress) { 
+             suicide(ownerAddress); // send funds to organizer
+        }
     }
 }
