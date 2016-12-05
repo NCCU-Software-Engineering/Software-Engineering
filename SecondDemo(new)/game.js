@@ -6,8 +6,9 @@ var abiArray = [{"constant":true,"inputs":[],"name":"getOwnerAddress","outputs":
 var contractAddress = "0x375F521086369F0C78890a36EA7487C8A90d7F26";
 var contract = web3.eth.contract(abiArray).at(contractAddress);
 
-
-
+function getPlayerAddress() {
+	return contract.getPlayerAddress();
+}
 
 function isPlayerWin() {
 	return contract.isPlayerWin();
@@ -107,10 +108,15 @@ function conf() {
 	update();
 		
 	frm1.style.visibility = "hidden";
-		
-	button_big.style.visibility = "visible";
-	button_small.style.visibility = "visible";
-
+	var event = contract.SetPlayerBetEvent({fromBlock :0,toBlock: 'latest' });
+	event.watch(function(error,result){
+		if(!error){
+			console.log(result);
+			button_big.style.visibility = "visible";
+			button_small.style.visibility = "visible";
+			update();
+		}
+	});
 }
 function showCard() {
 	console.log("showCard");
@@ -128,16 +134,22 @@ function big(){
 	comparison.style.visibility = "hidden";
 	
 	playGame();
-	showCard();
 	
-	if(isPlayerWin()){
-		winGame();
-	}
-	else {
-		loseGame();
-	}
-	
-	button_start.style.visibility = "visible";
+	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
+	event.watch(function(error,result){
+		if(!error){
+			console.log(result);
+			update();
+			showCard();
+			if(isPlayerWin()){
+				winGame();
+			}
+			else {
+				loseGame();
+			}
+			button_start.style.visibility = "visible";
+		}
+	});
 }
 
 function small(){
@@ -148,15 +160,25 @@ function small(){
 	comparison.style.visibility = "hidden";
 	
 	playGame();
-	showCard();
 	
-	if(!isPlayerWin()) {
-		winGame();
-	}
-	else {
-		loseGame();
-	}
-	button_start.style.visibility = "visible";
+	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
+	event.watch(function(error,result){
+		if(!error){
+			console.log(result);
+			update();
+			showCard();
+			
+			if(!isPlayerWin()) {
+				winGame();
+			}
+			else {
+				loseGame();
+			}
+			button_start.style.visibility = "visible";
+		}
+	});
+	
+
 }
 
 function winGame() {
@@ -173,7 +195,7 @@ function loseGame() {
 function update() {
 	
 	bankerMoney.innerHTML = web3.fromWei(getOwnerMoney(), 'ether');
-	yourMoney.innerHTML = web3.fromWei(getPlayerMoney(), 'ether');
+	yourMoney.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether');
 	
 	bet.innerHTML = web3.fromWei(getPlayerBet(), 'ether');
 }
