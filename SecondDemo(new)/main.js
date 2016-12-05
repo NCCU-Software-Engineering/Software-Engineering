@@ -14771,9 +14771,10 @@ module.exports={
         "spec": ">=6.0.0 <7.0.0",
         "type": "range"
       },
-      "C:\\Users\\nidhogg5\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign"
+      "C:\\Users\\User\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign"
     ]
   ],
+  "_cnpm_publish_time": 1473938838557,
   "_from": "elliptic@>=6.0.0 <7.0.0",
   "_id": "elliptic@6.3.2",
   "_inCache": true,
@@ -14806,7 +14807,7 @@ module.exports={
   "_shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "C:\\Users\\nidhogg5\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign",
+  "_where": "C:\\Users\\User\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -14839,7 +14840,9 @@ module.exports={
   "directories": {},
   "dist": {
     "shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
-    "tarball": "https://registry.npmjs.org/elliptic/-/elliptic-6.3.2.tgz"
+    "size": 41972,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/elliptic/download/elliptic-6.3.2.tgz"
   },
   "files": [
     "lib"
@@ -14862,6 +14865,7 @@ module.exports={
   ],
   "name": "elliptic",
   "optionalDependencies": {},
+  "publish_time": 1473938838557,
   "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
@@ -21029,31 +21033,43 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":90}],135:[function(require,module,exports){
 var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+var eth = web3.eth;
 
-var abiArray = [{"constant":true,"inputs":[],"name":"getOwnerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"bet","type":"uint256"}],"name":"setPlayerBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"Random","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"RandomCards","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"ownerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isPlayerWin","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"playGame","outputs":[],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"}];
-var contractAddress = "0x144ECcAbe95E14134a11feA959d4e93F18B85c3e";
+var abiArray = [{"constant":true,"inputs":[],"name":"getOwnerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"Random","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"destroy","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"RandomCards","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"isPlayerWin","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"playGame","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"setPlayerBet","outputs":[],"payable":true,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"}];
+var contractAddress = "0x072AA728d205394cdCa680DDd76751f0D6cA1659";
 var contract = web3.eth.contract(abiArray).at(contractAddress);
 
 function isPlayerWin() {
 	return contract.isPlayerWin();
 }
-
 function getOwnerMoney() {
 	return contract.getOwnerMoney();
 }
 function getPlayerMoney() {
 	return contract.getPlayerMoney();
 }
-
 function playGame() {
-	contract.playGame();
+	contract.playGame({
+		from: eth.coinbase,
+		gas: 1234567
+	});
 }
-
 function getOwnerCard() {
 	return contract.getOwnerCard();
 }
 function getPlayerCard() {
 	return contract.getPlayerCard();
+}
+function getPlayerBet() {
+	return contract.getPlayerBet();
+}
+
+function setPlayerBet(bet) {
+	contract.setPlayerBet({
+		from: eth.coinbase,
+		value: web3.toWei(bet, 'ether'),
+		gas: 1234567
+	});
 }
 
 var banker, player;
@@ -21061,6 +21077,7 @@ var card1 = document.getElementById("card1");
 var card2 = document.getElementById("card2");
 var win = document.getElementById("win");
 var lose = document.getElementById("lose");
+var comparison = document.getElementById("comparison");
 
 var button_big = document.getElementById("button_big");
 var button_small = document.getElementById("button_small");
@@ -21078,17 +21095,17 @@ button_small.addEventListener("click", small);
 button_start.addEventListener("click", init);
 button_confirm.addEventListener("click", conf);
 
-function owner(number){
-	this.number = number;
-}
 function init(){
 	console.log("init");
 	
-//	console.log(contract.getOwnerAddress());
-//	console.log(contract.getPlayerAddress());
+	console.log(contract.getOwnerAddress());
+	console.log(contract.getPlayerAddress());
 	
-//	console.log(contract.getOwnerMoney());
-//	console.log(contract.getPlayerMoney());
+	console.log(contract.getOwnerMoney());
+	console.log(contract.getPlayerMoney());
+	
+	//comparison出現
+	comparison.style.visibility = "visible";
 	
 	//win lose消失
 	win.style.visibility = "hidden";
@@ -21108,43 +21125,28 @@ function init(){
 	//出現輸入賭金
 	frm1.style.visibility = "visible";
 	
-	//bet monry初始化
-	bankerMoney.innerHTML = web3.fromWei(getOwnerMoney(), 'ether');
-	yourMoney.innerHTML = web3.fromWei(getPlayerMoney(), 'ether');
-	
-	bet.innerHTML = 1;
+	//刷新數值
+	update();
 }
 function conf() {
 	console.log("conf");
 	
-	if(setBet()){
-		console.log("setBet");
-		//隱藏輸入賭金
-		frm1.style.visibility = "hidden";
-		
-		button_big.style.visibility = "visible";
-		button_small.style.visibility = "visible";
-	}
-	else {
-		console.log("setBet error");
-	}
-}
-
-function setBet(){
-	
 	var tempBet = parseInt(frm.elements[0].value);
+	
+	setPlayerBet(tempBet);
+	update();
+		
+	frm1.style.visibility = "hidden";
+		
+	button_big.style.visibility = "visible";
+	button_small.style.visibility = "visible";
 
-//	if(contract.setPlayerBet(tempBet)==1) {
-		bet.innerHTML = tempBet;
-		return true;
-//	}
-//	return false;
 }
 function showCard() {
 	console.log("showCard");
 	
-	card1.src = "pic/card" + getOwnerCard() + ".png";
-	card2.src = "pic/card" + getPlayerCard() + ".png";
+	card1.src = "poker/card" + getOwnerCard() + ".png";
+	card2.src = "poker/card" + getPlayerCard() + ".png";
 	
 }
 
@@ -21153,16 +21155,17 @@ function big(){
 	
 	button_big.style.visibility = "hidden";
 	button_small.style.visibility = "hidden";
+	comparison.style.visibility = "hidden";
 	
 	playGame();
 	showCard();
 	
-//	if(isPlayerWin()==1){
+	if(isPlayerWin()){
 		winGame();
-//	}
-//	else {
-//		loseGame();
-//	}
+	}
+	else {
+		loseGame();
+	}
 	
 	button_start.style.visibility = "visible";
 }
@@ -21172,11 +21175,12 @@ function small(){
 
 	button_big.style.visibility = "hidden";
 	button_small.style.visibility = "hidden";
+	comparison.style.visibility = "hidden";
 	
 	playGame();
 	showCard();
 	
-	if(!isPlayerWin()==0) {
+	if(!isPlayerWin()) {
 		winGame();
 	}
 	else {
@@ -21195,6 +21199,13 @@ function loseGame() {
 	console.log("loseGame");
 	win.style.visibility = "hidden";
 	lose.style.visibility = "visible";
+}
+function update() {
+	
+	bankerMoney.innerHTML = web3.fromWei(getOwnerMoney(), 'ether');
+	yourMoney.innerHTML = web3.fromWei(getPlayerMoney(), 'ether');
+	
+	bet.innerHTML = web3.fromWei(getPlayerBet(), 'ether');
 }
 
 },{"web3":172}],136:[function(require,module,exports){
