@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= Address %></title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+</noscript>
+ <link rel="stylesheet" href="css/userdetail.css">
+</head>
+<body>
+	<h1><%= Address %>的使用紀錄
+	</h1>
+	<a href="/">登出</a>
+	<div id="logList">
+		<table class="responstable">
+			<tr>
+			<td>Address</td>
+			<td>使用者名稱</td>
+			<td>log</td>
+			<td>timeStamp</td>
+			</tr>
+			<% for(var i = 0; i < logs.length; i++) {%>
+			<tr>
+				<td><%= logs[i].userAddress %></td>
+				<td><%= logs[i].userName %></td>
+				<td><%= logs[i].gamelog %></td>
+				<td><%= logs[i].timeStamp %></td>
+			</tr>
+			<% } %>
+		</table>
+	</div>
+</body>
+</html>
