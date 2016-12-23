@@ -61,7 +61,7 @@ contract BlackjackContract {
 		SetPlayerBetEvent(msg.sender, msg.value, now);
     }
     
-    function playGame() {
+    function playGame_big(bool big) {
         
 //        if (isOwner()) {
 //           throw;
@@ -69,7 +69,7 @@ contract BlackjackContract {
 
         RandomCards();
         
-        if( isPlayerWin() ) {
+        if( isPlayerWin(big) ) {
 		    playerBets[msg.sender] *= 2;
         }
         else {
@@ -78,7 +78,7 @@ contract BlackjackContract {
 		
 		EndGameEvent(msg.sender, playerBets[msg.sender], now);
     }
-
+    
     function RandomCards() {
 
         ownerCard = Random();
@@ -105,12 +105,20 @@ contract BlackjackContract {
 		return random;
 	}
 	
-    function isPlayerWin() constant returns (bool) {
+    function isPlayerWin(bool big) constant returns (bool) {
         
-        if(playerCard > ownerCard) {
-            return true;
+        if(big) {
+            if(playerCard > ownerCard) {
+                return true;
+            }
+            return false;
         }
-        return false;
+        else {
+            if(playerCard < ownerCard) {
+                return true;
+            }
+            return false;
+        }
     }
     function version() constant returns (string){ 
         return "1.0.1";

@@ -2,16 +2,16 @@ var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 var eth = web3.eth;
 
-var abiArray = [{"constant":true,"inputs":[],"name":"getOwnerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"Random","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"destroy","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"RandomCards","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"isPlayerWin","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"playGame","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"setPlayerBet","outputs":[],"payable":true,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"timestamp","type":"uint256"}],"name":"SetPlayerBetEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"timestamp","type":"uint256"}],"name":"EndGameEvent","type":"event"}];
-var contractAddress = "0x375F521086369F0C78890a36EA7487C8A90d7F26";
+var abiArray = [{"constant":true,"inputs":[],"name":"getOwnerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"Random","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerBet","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"destroy","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"RandomCards","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"setPlayerBet","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"big","type":"bool"}],"name":"playGame_big","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"big","type":"bool"}],"name":"isPlayerWin","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"timestamp","type":"uint256"}],"name":"SetPlayerBetEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"timestamp","type":"uint256"}],"name":"EndGameEvent","type":"event"}];
+var contractAddress = "0x432429150B902Bc3bBd0e04c5Bd16c41A85af315";
 var contract = web3.eth.contract(abiArray).at(contractAddress);
 
 function getPlayerAddress() {
 	return contract.getPlayerAddress();
 }
 
-function isPlayerWin() {
-	return contract.isPlayerWin();
+function isPlayerWin(big) {
+	return contract.isPlayerWin(big);
 }
 function getOwnerMoney() {
 	return contract.getOwnerMoney();
@@ -19,7 +19,7 @@ function getOwnerMoney() {
 function getPlayerMoney() {
 	return contract.getPlayerMoney();
 }
-function playGame() {
+function playGame(big) {
 	contract.playGame({
 		from: eth.coinbase,
 		gas: 1234567
@@ -43,7 +43,7 @@ function setPlayerBet(bet) {
 	});
 }
 
-var banker, player;
+var banker, player, big;
 var card1 = document.getElementById("card1");
 var card2 = document.getElementById("card2");
 var win = document.getElementById("win");
@@ -68,12 +68,6 @@ button_confirm.addEventListener("click", conf);
 
 function init(){
 	console.log("init");
-	
-	console.log(contract.getOwnerAddress());
-	console.log(contract.getPlayerAddress());
-	
-	console.log(contract.getOwnerMoney());
-	console.log(contract.getPlayerMoney());
 	
 	//comparison出現
 	comparison.style.visibility = "visible";
@@ -104,6 +98,8 @@ function conf() {
 	
 	var tempBet = parseInt(frm.elements[0].value);
 	
+	console.log("tempBet = " + tempBet);
+	
 	setPlayerBet(tempBet);
 	update();
 		
@@ -133,7 +129,7 @@ function big(){
 	button_small.style.visibility = "hidden";
 	comparison.style.visibility = "hidden";
 	
-	playGame();
+	playGame(true);
 	
 	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
 	event.watch(function(error,result){
@@ -141,7 +137,7 @@ function big(){
 			console.log(result);
 			update();
 			showCard();
-			if(isPlayerWin()){
+			if(isPlayerWin(true)){
 				winGame();
 			}
 			else {
@@ -159,7 +155,7 @@ function small(){
 	button_small.style.visibility = "hidden";
 	comparison.style.visibility = "hidden";
 	
-	playGame();
+	playGame(true);
 	
 	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
 	event.watch(function(error,result){
@@ -168,7 +164,7 @@ function small(){
 			update();
 			showCard();
 			
-			if(!isPlayerWin()) {
+			if(!isPlayerWin(false)) {
 				winGame();
 			}
 			else {
@@ -177,8 +173,6 @@ function small(){
 			button_start.style.visibility = "visible";
 		}
 	});
-	
-
 }
 
 function winGame() {
