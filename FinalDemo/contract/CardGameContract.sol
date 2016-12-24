@@ -1,4 +1,4 @@
-pragma solidity ^0.4.6;
+pragma solidity ^0.4.2;
 
 contract CardGameContract {
     
@@ -19,9 +19,8 @@ contract CardGameContract {
 	event EndGameEvent(address from, uint256 value, uint256 timestamp);
     
 	// 建構子
-    function BlackjackContract() payable {
+    function CardGameContract() {
         ownerAddress = msg.sender;
-        playerBets[msg.sender] = 0;
     }
     function isOwner() returns (bool) {
         return (msg.sender == ownerAddress);
@@ -58,11 +57,7 @@ contract CardGameContract {
     
     //玩家設定賭金
     function setPlayerBet() payable {
-        
-        if(getOwnerMoney() < msg.value) {
-            throw;
-        }
-        
+
 		playerBets[msg.sender] += msg.value;
 		
 		SetPlayerBetEvent(msg.sender, msg.value, now);
@@ -88,20 +83,21 @@ contract CardGameContract {
 		EndGameEvent(msg.sender, playerBets[msg.sender], now);
     }
     
-    //產生隨機兩張牌 確保排不一樣
+    //產生隨機兩張牌 確保牌不一樣
     function RandomCards() {
 
-        ownerCard = (uint(block.blockhash(block.number+number)))%52;
+        ownerCard = (uint(sha256(number))+uint(block.blockhash(block.number-1)))%52;
         number += ownerCard;
         
-        playerCard = (uint(block.blockhash(block.number+number)))%52;
+        playerCard = (uint(sha256(number))+uint(block.blockhash(block.number-1)))%52;
         number += playerCard;
-	    while ( ownerCard == playerCard ) {
-            playerCard = (uint(block.blockhash(block.number+number)))%52;
-            number += playerCard;
-	    }	
+        
+//	    while ( ownerCard == playerCard ) {
+//           playerCard = (uint(block.blockhash(block.number+number)))%52;
+//            number += playerCard;
+//	    }	
 	}
-	
+
 	//判斷輸贏
     function isPlayerWin(bool big) constant returns (bool) {
         
@@ -121,7 +117,7 @@ contract CardGameContract {
     
     //版本號
     function version() constant returns (string){ 
-        return "1.0.3";
+        return "2.0.0";
     }
     
     //摧毀合約 取回賭場金錢
