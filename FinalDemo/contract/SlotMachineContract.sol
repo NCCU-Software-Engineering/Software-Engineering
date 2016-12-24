@@ -1,23 +1,28 @@
-pragma solidity ^0.4.2;
+pragma solidity ^0.4.6;
 
 contract SlotContract {
     
     // 此合約的擁有者
     address private ownerAddress;
- 
-    // 每位玩家的賭金
-    mapping (address => uint) private playerBets;
     
-    //拉霸種類
-    enum  Kind {JP, Box, BAR, Seven, Jocker, Spade, Heart, Diamond, Club}
-    Kind[3] kind;
+    uint one;
+    uint two;
+    uint three;
     
+    //拉霸種類 和對應數字
+    //enum  Kind {Cherry, BAR1, BAR2, BAR3, Seven1, Seven3, Money, Crystal, WILD}
+    //            9       8     7     6     5       4       3      2        1
+    
+    //三條拉霸 對應GUI
+    uint[] Kind1;
+    uint[] Kind2;
+    uint[] Kind3;
+
     //亂數種子
     uint private number = 777;
 
     //回傳事件
-    event SetPlayerBetEvent(address from, uint256 value, uint256 timestamp);
-	event WinGameEvent(address from, uint256 value, uint256 timestamp);
+	event EndGameEvent(address from, uint256 value, uint256 timestamp);
     
     //建構子
     function SlotContract() payable {
@@ -42,128 +47,128 @@ contract SlotContract {
     function getPlayerMoney() constant returns (uint) {
         return msg.sender.balance;
     }
-    function setPlayerBet() payable {
-		playerBets[msg.sender] += msg.value;
-		
-		SetPlayerBetEvent(msg.sender, msg.value, now);
-    }
     
+    //取得拉霸條位置
+    function getOne() constant returns (uint) {
+        return One;
+	}
+	function getTwo() constant returns (uint) {
+        return two;
+	}
+	function getThree() constant returns (uint) {
+        return three;
+	}
+
     //開始遊戲
-    function playGame() {
+    function playGame() payable {
         
-        if(playerBets[msg.sender]==0) {
+        if(msg.value == 0) {
             throw;
         }
+        
+        uint bonus = 0;
 
         randomKind();
         
         //檢查輸贏
-        if(kind[0]==kind[1] && kind[1]==kind[2]) {
-            payPlayer(kind[0], true);
-        }
-        else if(kind[0]==kind[1]) {
-            payPlayer(kind[0], false);
-        }
-        else if(kind[1]==kind[2]) {
-            payPlayer(kind[1], false);
-        }
-        else if(kind[0]==kind[2]) {
-            payPlayer(kind[0], false);
-        }
-    }
-    function payPlayer(Kind winKind, bool triple){
         
-        uint value;
+        //賭一條線 中間條
+        if(msg.value >=10) {
+            bonus += countBonus(Kind1[one], Kind2[two], Kind3[three]);
+        }
+        //賭兩條線 上橫條
+        if(msg.value >=20) {
+            bonus += countBonus(Kind1[one-1], Kind2[two-1], Kind3[three-1]);
+        }
+        //賭三條線 下橫條
+        if(msg.value >=30) {
+            bonus += countBonus(Kind1[one+1], Kind2[two+1], Kind3[three+1]);
+        }
+        //賭四條線 右上左下斜線
+        if(msg.value >=40) {
+            bonus += countBonus(Kind1[one+1], Kind2[two], Kind3[three-1]);
+        }
+        //賭五條線 左上右下斜線
+        if(msg.value >=50) {
+            bonus += countBonus(Kind1[one-1], Kind2[two], Kind3[three+1]);
+        }
         
-        if(winKind == Kind.Club)
-            value = 2;
-        else if(winKind == Kind.Diamond)
-            value = 4;
-        else if(winKind == Kind.Heart)
-            value = 6;
-        else if(winKind == Kind.Spade)
-            value = 9;
-        else if(winKind == Kind.Jocker)
-            value = 15;
-        else if(winKind == Kind.Seven)
-            value = 30;
-        else if(winKind == Kind.BAR)
-            value = 50;
-        else if(winKind == Kind.Box)
-            value = 330;
-        else if(winKind == Kind.JP)
-            value = 8888;
-
-        if(triple)
-            value *= 5;
-        
-        if( !msg.sender.send(value) ) {
+        if( !msg.sender.send(bonus) ) {
             throw;
         }
         
-        playerBets[msg.sender] -= 10;
+        EndGameEvent(address from, uint256 value, uint256 timestamp);
     }
     
-    //產生隨機三個拉霸圖
+    //計算獎金
+    function countBonus(uint a, uint b, uint c) returns (uint) { 
+    
+        //中三個 基礎獎金乘5倍
+        if(a == b && b == c) {
+            return getMagnification(a) * 5;
+        }
+        
+        //中兩個 基礎獎金
+        else if(a == b) {
+            return getMagnification(a);
+        }
+        else if(b == c) {
+            return getMagnification(b);
+        }
+        else if(a == c) {
+            return getMagnification(c);
+        }
+        
+        //都沒中
+        return 0;
+    }
+    
+    //取得每種圖案的基礎獎金
+    function getMagnification(uint kind) returns (uint) {
+        
+        if(kind == 9)
+            return 2;
+        else if(kind == 8)
+            return 4;
+        else if(kind == 7)
+            return 6;
+        else if(kind == 6)
+            return 9;
+        else if(kind == 5)
+            return 15;
+        else if(kind == 4)
+            return 30;
+        else if(kind == 3)
+            return 50;
+        else if(kind == 2)
+            return 330;
+        else if(kind == 1)
+            return 8888;
+            
+        //不應該執行到這邊
+        throw;
+    }
+    
+    //產生隨機三個拉霸圖的位置
     function randomKind () {
-        kind[0] = probability();
-        kind[1] = probability();
-        kind[2] = probability();
+        one = getRandom(45);
+        two = getRandom(45);
+        three = getRandom(45);
 	}
 	
-	//根據機率產生拉霸圖
-    function probability() private returns (Kind) {
-        
-        uint random = getRandom(45);
-        
-        if(27 <= random && random <= 45)//27~45
-            return Kind.Club;
-        if(29 <= random && random <= 36)//29~36
-            return Kind.Diamond;            
-        if(22 <= random && random <= 28)//22~28
-            return Kind.Heart;
-        if(16 <= random && random <= 21)//16~21
-            return Kind.Spade;   
-        if(11 <= random && random <= 15)//11~15
-            return Kind.Jocker;
-        if(7  <= random && random <= 10)//7~10
-            return Kind.Seven;    
-        if(4  <= random && random <=  6)//4~6
-            return Kind.BAR;    
-        if(2  <= random && random <=  3)//2~3
-            return Kind.Box;    
-        if(random == 1)//1
-            return Kind.JP;
-	}
-	
+	//取得1到range範圍的亂數
     function getRandom(uint range) returns (uint) {
-        uint random = (number+uint(block.blockhash(block.number-1)))%range;
+        uint random = (uint(sha256(number))+uint(block.blockhash(block.number-1)))%range;
         number += random;
 		return random + 1;
-	}
+    }
 	
-	function getKind(uint i) constant returns (uint) {
-        
-        if(kind[i] == Kind.Club)
-            return 9;
-        else if(kind[i] == Kind.Diamond)
-            return 8;
-        else if(kind[i] == Kind.Heart)
-            return 7;
-        else if(kind[i] == Kind.Spade)
-            return 6;
-        else if(kind[i] == Kind.Jocker)
-            return 5;
-        else if(kind[i] == Kind.Seven)
-            return 4;
-        else if(kind[i] == Kind.BAR)
-            return 3;
-        else if(kind[i] == Kind.Box)
-            return 2;
-        else if(kind[i] == Kind.JP)
-            return 1;
-    }   
-	   
+	//版本號
+    function version() constant returns (string){ 
+        return "1.0.4";
+    }
+	
+	//摧毀合約 取回賭場金錢
 	function destroy() {
          if (msg.sender == ownerAddress) { 
              suicide(ownerAddress);
