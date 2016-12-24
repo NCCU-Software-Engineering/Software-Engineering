@@ -22,7 +22,7 @@ contract SlotContract {
     uint private number = 777;
 
     //回傳事件
-	event EndGameEvent(address from, uint256 value, uint256 timestamp);
+	event EndGameEvent(address from, uint256 bonus, uint256 timestamp);
     
     //建構子
     function SlotContract() payable {
@@ -50,7 +50,7 @@ contract SlotContract {
     
     //取得拉霸條位置
     function getOne() constant returns (uint) {
-        return One;
+        return one;
 	}
 	function getTwo() constant returns (uint) {
         return two;
@@ -97,7 +97,7 @@ contract SlotContract {
             throw;
         }
         
-        EndGameEvent(address from, uint256 value, uint256 timestamp);
+        EndGameEvent(msg.sender, bonus, now);
     }
     
     //計算獎金
