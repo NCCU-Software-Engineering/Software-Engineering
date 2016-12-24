@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--
+	Transit by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Generic - Transit by TEMPLATED</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="index.html">賭場</a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="index.html">首頁</a></li>
+						<li><a href="introduction.html">如何開始</a></li>
+						<li><a href="CardGame.html">比大小</a></li>
+						<li><a href="SlotMachine.html">吃角子老虎機</a></li>
+						<li><a href="#" class="button special">註冊</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Main -->
+		
+			<section style="top:150px;left:20%;position:absolute;">
+				
+				<!--<embed src="music\Bumper_Tag.mp3" autostart=true hidden=true>-->
+				
+				<div style="top:0px;left:0px;position:absolute;"><img id="background" src="images/game1/background.png" /></div>
+				
+				<div style="top:100px;left:554px;position:absolute;"><img id="card1" src="images/game1/reverse.png" /></div>
+				
+				<div style="top:450px;left:554px;position:absolute;"><img id="card2" src="images/game1/reverse.png"/></div>
+				
+				
+				<form style="top:495px;left:150px;position:absolute;visibility:hidden;" id="frm1" action="form_action.asp">
+				  <img src="images/game1/enter.png"/><br><br>
+				  <input type="number" name="bet"><br><br>
+				  <button type="button" id = "button_confirm" ><img src="images/game1/confirm.png"></button>
+				</form>
+				
+				<div style="top:325px;left:425px;position:absolute;visibility:hidden;">
+					<button type="button" id = "button_big"><img src="images/game1/big.png"></button>
+				</div>
+				<div style="top:325px;left:575px;position:absolute;visibility:hidden;">
+					<button type="button" id = "button_small"><img src="images/game1/small.png"></button>
+				</div>
+				
+				<div style="top:325px;left:495px;position:absolute;">
+					<button type="button" id = "button_start"><img src="images/game1/start.png"></button>
+				</div>
+				
+				<div style="top:250px;left:515px;position:absolute;"><img id="comparison" src="images/game1/comparison.png"/></div>
+				<div style="top:258px;left:505px;position:absolute;visibility:hidden;"><img id="win" src="images/game1/win.png"/></div>
+				<div style="top:258px;left:505px;position:absolute;visibility:hidden;"><img id="lose" src="images/game1/lose.png"/></div>		
+
+				<div style="top:495px;left:900px;position:absolute;" id = "bankerMoney"><style="font-family:cursive;"><style="font-size:18px;"></div>
+				<div style="top:540px;left:900px;position:absolute;" id = "yourMoney"><style="font-family:cursive;"><style="font-size:18px;"></div>
+				<div style="top:585px;left:900px;position:absolute;" id = "bet"><style="font-family:cursive;"><style="font-size:18px;"></div>
+				
+				<script language="JavaScript" src = "js/CardGame_b.js"></script>
+				<script language="JavaScript" src = "js/node_modules/web3/dist/web3.js"></script>
+			
+			</section>
+
+		<!--
+			<footer id="footer" style="top:700px;position:absolute;">
+				<div class="container">
+					<section class="links">
+						<div class="row">
+							<section class="3u 6u(medium) 12u$(small)">
+								<h3>Lorem ipsum dolor</h3>
+								<ul class="unstyled">
+									<li><a href="#">Lorem ipsum dolor sit</a></li>
+									<li><a href="#">Nesciunt itaque, alias possimus</a></li>
+									<li><a href="#">Optio rerum beatae autem</a></li>
+									<li><a href="#">Nostrum nemo dolorum facilis</a></li>
+									<li><a href="#">Quo fugit dolor totam</a></li>
+								</ul>
+							</section>
+							<section class="3u 6u$(medium) 12u$(small)">
+								<h3>Culpa quia, nesciunt</h3>
+								<ul class="unstyled">
+									<li><a href="#">Lorem ipsum dolor sit</a></li>
+									<li><a href="#">Reiciendis dicta laboriosam enim</a></li>
+									<li><a href="#">Corporis, non aut rerum</a></li>
+									<li><a href="#">Laboriosam nulla voluptas, harum</a></li>
+									<li><a href="#">Facere eligendi, inventore dolor</a></li>
+								</ul>
+							</section>
+							<section class="3u 6u(medium) 12u$(small)">
+								<h3>Neque, dolore, facere</h3>
+								<ul class="unstyled">
+									<li><a href="#">Lorem ipsum dolor sit</a></li>
+									<li><a href="#">Distinctio, inventore quidem nesciunt</a></li>
+									<li><a href="#">Explicabo inventore itaque autem</a></li>
+									<li><a href="#">Aperiam harum, sint quibusdam</a></li>
+									<li><a href="#">Labore excepturi assumenda</a></li>
+								</ul>
+							</section>
+							<section class="3u$ 6u$(medium) 12u$(small)">
+								<h3>Illum, tempori, saepe</h3>
+								<ul class="unstyled">
+									<li><a href="#">Lorem ipsum dolor sit</a></li>
+									<li><a href="#">Recusandae, culpa necessita nam</a></li>
+									<li><a href="#">Cupiditate, debitis adipisci blandi</a></li>
+									<li><a href="#">Tempore nam, enim quia</a></li>
+									<li><a href="#">Explicabo molestiae dolor labore</a></li>
+								</ul>
+							</section>
+						</div>
+					</section>
+					<div class="row">
+						<div class="8u 12u$(medium)">
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved.</li>
+								<li>Design: <a href="http://templated.co">TEMPLATED</a></li>
+								<li>Images: <a href="http://unsplash.com">Unsplash</a></li>
+							</ul>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<ul class="icons">
+								<li>
+									<a class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
+								</li>
+								<li>
+									<a class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		-->
+		
+	</body>
+</html>
