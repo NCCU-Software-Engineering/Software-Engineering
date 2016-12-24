@@ -55,6 +55,8 @@ function version() {
 
 var card1 = document.getElementById("card1");
 var card2 = document.getElementById("card2");
+var bigbig = document.getElementById("bigbig");
+var smallsmall = document.getElementById("smallsmall");
 var win = document.getElementById("win");
 var lose = document.getElementById("lose");
 var comparison = document.getElementById("comparison");
@@ -69,6 +71,8 @@ var frm = document.getElementById("frm1");
 var bankerMoney = document.getElementById("bankerMoney");
 var yourMoney = document.getElementById("yourMoney");
 var bet = document.getElementById("bet");
+
+var tempBet;
 
 button_big.addEventListener("click", big);
 button_small.addEventListener("click", small);
@@ -94,6 +98,9 @@ function init(){
 	win.style.visibility = "hidden";
 	lose.style.visibility = "hidden";
 	
+	bigbig.style.visibility = "hidden";
+	smallsmall.style.visibility = "hidden";
+	
 	//button_start隱藏
 	button_start.style.visibility = "hidden";
 	
@@ -114,10 +121,14 @@ function conf() {
 	card1.src = "images/game1/reverse.png";
 	card2.src = "images/game1/reverse.png";
 	
-	var tempBet = parseInt(frm.elements[0].value);
-
+	tempBet = parseInt(frm.elements[0].value);
+	if(tempBet == 0 || tempBet == NaN){
+		return;
+	}
 	console.log("setPlayerBet = " + tempBet);
 	setPlayerBet(tempBet);
+	tempBet = getPlayerBet();
+	
 	frm1.style.visibility = "hidden";
 	
 	var event = contract.SetPlayerBetEvent({fromBlock :0,toBlock: 'latest' });
@@ -138,6 +149,7 @@ function big(){
 	button_big.style.visibility = "hidden";
 	button_small.style.visibility = "hidden";
 	comparison.style.visibility = "hidden";
+	bigbig.style.visibility = "visible";
 	
 	playGame(true);
 	
@@ -151,10 +163,12 @@ function big(){
 			if(isPlayerWin(true)){
 				console.log("win big");
 				winGame();
+				window.alert("恭喜你獲得" + tempBet.toString() + "ETH");
 			}
 			else {
 				console.log("lose big");
 				loseGame();
+				window.alert("笑你運氣不好");
 			}
 			button_start.style.visibility = "visible";
 		}
@@ -170,6 +184,7 @@ function small(){
 	button_big.style.visibility = "hidden";
 	button_small.style.visibility = "hidden";
 	comparison.style.visibility = "hidden";
+	smallsmall.style.visibility = "visible";
 	
 	playGame(false);
 	
