@@ -21270,7 +21270,7 @@ function loseGame() {
 function update() {
 	
 	bankerMoney.innerHTML = web3.fromWei(getOwnerMoney(), 'ether');
-	yourMoney.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether');
+	yourMoney.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether').toFixed(4);
 	
 	bet.innerHTML = web3.fromWei(getPlayerBet(), 'ether');
 }
