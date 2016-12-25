@@ -21048,10 +21048,10 @@ function getOwnerMoney() {
 function getPlayerMoney() {
 	return contract.getPlayerMoney();
 }
-function playGame(CoinTime) {
+function playGame(coin) {
 	contract.playGame({
 		from: eth.coinbase,
-		value: web3.toWei(CoinTime, 'ether'),
+		value: web3.toWei(coin, 'ether'),
 		gas: 3000000
 	});
 }
@@ -21067,11 +21067,14 @@ function getThree() {
 function getWinBonus() {
     return contract.getWinBonus();
 }
+var money = document.getElementById("player_money");
 
 var arrow_left = document.getElementById("arrow_left");
 var arrow_right = document.getElementById("arrow_right");
+
 var btn_spin = document.getElementById("btn_spin");
 var bet = document.getElementById("bet");
+var total_bet = document.getElementById("total_bet");
 
 var l0 = document.getElementById("l0");
 var l1 = document.getElementById("l1");
@@ -21085,79 +21088,121 @@ var r0 = document.getElementById("r0");
 var r1 = document.getElementById("r1");
 var r2 = document.getElementById("r2");
 
-arrow_left.addEventListener("click", Coin_up);
-arrow_right.addEventListener("click", Coin_down);
+
+arrow_left.addEventListener("click", Coin_down);
+arrow_right.addEventListener("click", Coin_up);
+
 btn_spin.addEventListener("click", Start);
 
 
 var CoinTime = 0;
+var linebet = 0;
 var one, two, three;
-var x = 2, change = 10; 
-
+var kind1 = [7,1,5,2,6,1,3,8,3,7,1];
+var kind2 = [3,4,8,2,7,6,4,5,1,3,4];
+var kind3 = [7,4,2,5,8,1,6,8,3,7,4];
+var x = 5,y = 8,z = 8;
+var stop = false;
+bet.innerHTML = 10;
 function Start(){
 	console.log("Start");
-
-	//�}�l�C��
-	playGame(10);
+	
+	playGame(CoinTime * 10);
 	CoinTime = 0;
+	linebet = 0;
 	
 	var lpic = [10];
 	var mpic = [10];
 	var rpic = [10];
 	var i = 0;
-	
-	move();	
-		
-
-	
+	move1();
+	move2();
+	move3();
 	//�ƥ���ť(�X���S��)
-	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
+	var number = web3.eth.blockNumber;
+	console.log(number);
+	var event = contract.EndGameEvent({from:web3.coinbase},{fromBlock :number,toBlock: 'latest' });
 	event.watch(function(error,result){
 		if(!error){
 			console.log(result);
-			
 			//�Ϥ�����
 			one = getOne();
 			two =  getTwo();
 			three = getThree();
+			stop = true;
+			console.log(one);
+			console.log(one-1);
+			l2.src = "images/game2/Slots/mark"+kind1[one+1]+".png";
+			l1.src = "images/game2/Slots/mark"+kind1[one]+".png";
+			l0.src = "images/game2/Slots/mark"+kind1[one-1]+".png";;
+	
+			m2.src = "images/game2/Slots/mark"+kind2[two+1]+".png";
+			m1.src = "images/game2/Slots/mark"+kind2[two]+".png";
+			m0.src = "images/game2/Slots/mark"+kind2[two-1]+".png";
+
+			r2.src = "images/game2/Slots/mark"+kind3[three+1]+".png";
+			r1.src = "images/game2/Slots/mark"+kind3[three]+".png";
+			r0.src = "images/game2/Slots/mark"+kind3[three-1]+".png";
+			
 			console.log("one = " + one);
 			console.log("two = " + two);
 			console.log("three = " + three);
 			console.log("winBonus = " + getWinBonus());
 			//���s�}�l
+			event.stopWatching();
 		}
 	});
 }
-
-function move() {
-	
-	l2.src = l1.src;
-	l1.src = l0.src;
-	
-	m2.src = m1.src;
-	m1.src = m0.src;
-	
-	r2.src = r1.src;
-	r1.src = r0.src;
-	
-	setTimeout("move()", 500);
+function move1() {
+	if(stop){
+		return;
+	}
+	l2.src = "images/game2/Slots/mark"+kind1[x+1]+".png";
+	l1.src = "images/game2/Slots/mark"+kind1[x]+".png";
+	l0.src = "images/game2/Slots/mark"+kind1[x-1]+".png";
+	x--;
+	if(x == 1)
+		x = 10;
+	setTimeout(move1,100);
 }
-
+function move2(){
+	if(stop)
+		return;
+	m2.src = "images/game2/Slots/mark"+kind2[y+1]+".png";
+	m1.src = "images/game2/Slots/mark"+kind2[y]+".png";
+	m0.src = "images/game2/Slots/mark"+kind2[y-1]+".png";
+	y--;
+	if(y == 1)
+		y = 10;
+	setTimeout(move2,100);
+}
+function move3(){
+	if(stop)
+		return;
+	r2.src = "images/game2/Slots/mark"+kind3[z+1]+".png";
+	r1.src = "images/game2/Slots/mark"+kind3[z]+".png";
+	r0.src = "images/game2/Slots/mark"+kind3[z-1]+".png";
+	z--;
+	if(z == 1)
+		z = 10;
+	setTimeout(move3,100);
+}
 function Coin_up(){
-	console.log("Coin_up");
-	if(CoinTime < 50)
-		CoinTime += 10;
-	bet.innerHTML = '2';
+	console.log("Coin_up2");
+	if(CoinTime < 5)
+		CoinTime += 1;
+	total_bet.innerHTML = CoinTime * 10;
 }
 function Coin_down(){
-	console.log("Coin_down");
+	console.log("Coin_down2");
 	if(CoinTime > 0)
-		CoinTime -= 10;
-	bet.innerHTML = '2';
+		CoinTime -= 1;
+	total_bet.innerHTML = CoinTime * 10;
 }
-function init(){
-	//���m
+function update(){
+	money.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether').toFixed(0);
 }
+update();
 },{"web3":172}],136:[function(require,module,exports){
 /*! bignumber.js v2.0.7 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
