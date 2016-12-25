@@ -14771,7 +14771,7 @@ module.exports={
         "spec": ">=6.0.0 <7.0.0",
         "type": "range"
       },
-      "C:\\Users\\nidhogg5\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign"
+      "C:\\Users\\dennis\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
@@ -14806,7 +14806,7 @@ module.exports={
   "_shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "C:\\Users\\nidhogg5\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign",
+  "_where": "C:\\Users\\dennis\\AppData\\Roaming\\npm\\node_modules\\browserify\\node_modules\\browserify-sign",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -21175,9 +21175,9 @@ function conf() {
 			button_big.style.visibility = "visible";
 			button_small.style.visibility = "visible";
 			update();
+			event.stopWatching();
 		}
 	});
-	//event.stopWatching();
 }
 
 function big(){
@@ -21217,8 +21217,8 @@ function big(){
 		else {
 			console.log("error");
 		}
+		event.stopWatching();
 	});
-	//event.stopWatching();
 }
 
 function small(){
@@ -21253,8 +21253,8 @@ function small(){
 		else {
 			console.log("error");
 		}
+		event.stopWatching();
 	});
-	//event.stopWatching();
 }
 
 function showCard() {
