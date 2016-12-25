@@ -60,6 +60,7 @@ var smallsmall = document.getElementById("smallsmall");
 var win = document.getElementById("win");
 var lose = document.getElementById("lose");
 var comparison = document.getElementById("comparison");
+var loading = document.getElementById("loading");
 
 var button_big = document.getElementById("button_big");
 var button_small = document.getElementById("button_small");
@@ -98,6 +99,8 @@ function init(){
 	win.style.visibility = "hidden";
 	lose.style.visibility = "hidden";
 	
+	//loading和你選X消失
+	loading.style.visibility = "hidden";
 	bigbig.style.visibility = "hidden";
 	smallsmall.style.visibility = "hidden";
 	
@@ -116,6 +119,7 @@ function init(){
 }
 function conf() {
 	console.log("conf");
+	loading.style.visibility = "visible";
 	
 	//卡片翻回背面
 	card1.src = "images/game1/reverse.png";
@@ -136,6 +140,7 @@ function conf() {
 		if(!error){
 			console.log(result);
 			console.log("setPlayerBet success");
+			loading.style.visibility = "hidden";
 			button_big.style.visibility = "visible";
 			button_small.style.visibility = "visible";
 			update();
@@ -153,12 +158,14 @@ function big(){
 	
 	playGame(true);
 	
+	loading.style.visibility = "visible";
 	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
 	event.watch(function(error,result){
 		if(!error){
 			console.log(result);
 			update();
 			showCard();
+			loading.style.visibility = "hidden";
 			
 			if(isPlayerWin(true)){
 				console.log("win big");
