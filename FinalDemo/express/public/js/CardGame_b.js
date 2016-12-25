@@ -21164,7 +21164,9 @@ function conf() {
 	
 	frm1.style.visibility = "hidden";
 	
-	var event = contract.SetPlayerBetEvent({fromBlock :0,toBlock: 'latest' });
+	var number = web3.eth.blockNumber;
+	console.log(number);
+	var event = contract.SetPlayerBetEvent({from:web3.coinbase},{fromBlock :number,toBlock: 'latest' });
 	event.watch(function(error,result){
 		if(!error){
 			console.log(result);
@@ -21175,6 +21177,7 @@ function conf() {
 			update();
 		}
 	});
+	//event.stopWatching();
 }
 
 function big(){
@@ -21188,7 +21191,10 @@ function big(){
 	playGame(true);
 	
 	loading.style.visibility = "visible";
-	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
+	
+	var number = web3.eth.blockNumber;
+	console.log(number);
+	var event = contract.EndGameEvent({from:web3.coinbase},{fromBlock :number,toBlock: 'latest' });
 	event.watch(function(error,result){
 		if(!error){
 			console.log(result);
@@ -21212,6 +21218,7 @@ function big(){
 			console.log("error");
 		}
 	});
+	//event.stopWatching();
 }
 
 function small(){
@@ -21224,7 +21231,9 @@ function small(){
 	
 	playGame(false);
 	
-	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
+	var number = web3.eth.blockNumber;
+	console.log(number);
+	var event = contract.EndGameEvent({from:web3.coinbase},{fromBlock :number,toBlock: 'latest' });
 	event.watch(function(error,result){
 		if(!error){
 			console.log(result);
@@ -21245,6 +21254,7 @@ function small(){
 			console.log("error");
 		}
 	});
+	//event.stopWatching();
 }
 
 function showCard() {
