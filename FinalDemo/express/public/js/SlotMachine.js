@@ -1,9 +1,10 @@
 var Web3 = require("web3");
+
 var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 var eth = web3.eth;
 
-var abiArray = ;
-var contractAddress = "";
+var abiArray = [{"constant":true,"inputs":[],"name":"getOwnerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getThree","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getWinBonus","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"a","type":"uint256"},{"name":"b","type":"uint256"},{"name":"c","type":"uint256"}],"name":"countBonus","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"kind","type":"uint256"}],"name":"getMagnification","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"destroy","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOne","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"playGame","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"range","type":"uint256"}],"name":"getRandom","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"randomKind","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getTwo","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[],"payable":true,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"bonus","type":"uint256"},{"indexed":false,"name":"timestamp","type":"uint256"}],"name":"EndGameEvent","type":"event"}];
+var contractAddress = "0x776f935b0F79370e12e05A55e3FB9aB62703E1A4";
 var contract = web3.eth.contract(abiArray).at(contractAddress);
 
 function getOwnerAddress() {
@@ -34,18 +35,51 @@ function getTwo() {
 function getThree() {
 	return contract.getThree();
 }
+function getWinBonus() {
+    return contract.getWinBonus();
+}
+
+var arrow_left = document.getElementById("arrow_left");
+var arrow_right = document.getElementById("arrow_right");
+var btn_spin = document.getElementById("btn_spin");
+var bet = document.getElementById("bet");
+
+var l0 = document.getElementById("l0");
+var l1 = document.getElementById("l1");
+var l2 = document.getElementById("l2");
+
+var m0 = document.getElementById("m0");
+var m1 = document.getElementById("m1");
+var m2 = document.getElementById("m2");
+
+var r0 = document.getElementById("r0");
+var r1 = document.getElementById("r1");
+var r2 = document.getElementById("r2");
+
+arrow_left.addEventListener("click", Coin_up);
+arrow_right.addEventListener("click", Coin_down);
+btn_spin.addEventListener("click", Start);
+
 
 var CoinTime = 0;
 var one, two, three;
+var x = 2, change = 10; 
 
 function Start(){
+	console.log("Start");
 
 	//開始遊戲
-	playGame(CoinTime);
+	playGame(10);
 	CoinTime = 0;
 	
-	//圖片移動
-	/*...*/
+	var lpic = [10];
+	var mpic = [10];
+	var rpic = [10];
+	var i = 0;
+	
+	move();	
+		
+
 	
 	//事件監聽(合約沒有)
 	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
@@ -57,17 +91,41 @@ function Start(){
 			one = getOne();
 			two =  getTwo();
 			three = getThree();
-			
+			console.log("one = " + one);
+			console.log("two = " + two);
+			console.log("three = " + three);
+			console.log("winBonus = " + getWinBonus());
 			//重新開始
 		}
 	});
 }
 
-function Coin(){
-	if(CoinTime < 50)
-		CoinTime += 10;
+function move() {
+	
+	l2.src = l1.src;
+	l1.src = l0.src;
+	
+	m2.src = m1.src;
+	m1.src = m0.src;
+	
+	r2.src = r1.src;
+	r1.src = r0.src;
+	
+	setTimeout("move()", 500);
 }
 
+function Coin_up(){
+	console.log("Coin_up");
+	if(CoinTime < 50)
+		CoinTime += 10;
+	bet.innerHTML = '2';
+}
+function Coin_down(){
+	console.log("Coin_down");
+	if(CoinTime > 0)
+		CoinTime -= 10;
+	bet.innerHTML = '2';
+}
 function init(){
 	//重置
 }

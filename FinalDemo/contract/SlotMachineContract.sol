@@ -1,6 +1,6 @@
 pragma solidity ^0.4.6;
 
-contract SlotContract {
+contract SlotMachineContract {
     
     // 此合約的擁有者
     address private ownerAddress;
@@ -9,14 +9,16 @@ contract SlotContract {
     uint two;
     uint three;
     
+    uint winBonus;
+    
     //拉霸種類 和對應數字
     //enum  Kind {Cherry, BAR1, BAR2, BAR3, Seven1, Seven3, Money, Crystal, WILD}
     //            9       8     7     6     5       4       3      2        1
     
     //三條拉霸 對應GUI
-    uint[] Kind1;
-    uint[] Kind2;
-    uint[] Kind3;
+    uint[11] Kind1;
+    uint[11] Kind2;
+    uint[11] Kind3;
 
     //亂數種子
     uint private number = 777;
@@ -25,10 +27,46 @@ contract SlotContract {
 	event EndGameEvent(address from, uint256 bonus, uint256 timestamp);
     
     //建構子
-    function SlotContract() payable {
+    function SlotMachineContract() payable {
         ownerAddress = msg.sender;
-    }
-    
+        
+        Kind1[0] = 7;
+        Kind1[1] = 1;
+        Kind1[2] = 5;
+        Kind1[3] = 2;
+        Kind1[4] = 6;
+        Kind1[5] = 1;
+        Kind1[6] = 3;
+        Kind1[7] = 8;
+        Kind1[8] = 3;
+        Kind1[9] = 7;
+        Kind1[10] = 1;
+        
+        Kind2[0] = 3;
+        Kind2[1] = 4;
+        Kind2[2] = 8;
+        Kind2[3] = 2;
+        Kind2[4] = 7;
+        Kind2[5] = 6;
+        Kind2[6] = 4;
+        Kind2[7] = 5;
+        Kind2[8] = 1;
+        Kind2[9] = 3;
+        Kind2[10] = 4;
+        
+        Kind3[0] = 7;
+        Kind3[1] = 4;
+        Kind3[2] = 2;
+        Kind3[3] = 5;
+        Kind3[4] = 8;
+        Kind3[5] = 1;
+        Kind3[6] = 6;
+        Kind3[7] = 8;
+        Kind3[8] = 3;
+        Kind3[9] = 7;
+        Kind3[10] = 4;
+    }   
+        
     //Owner
     function isOwner() returns (bool) {
         return (msg.sender == ownerAddress);
@@ -58,6 +96,12 @@ contract SlotContract {
 	function getThree() constant returns (uint) {
         return three;
 	}
+
+	function getWinBonus() constant returns (uint) {
+        return winBonus;
+	}
+	
+	
 
     //開始遊戲
     function playGame() payable {
@@ -96,6 +140,8 @@ contract SlotContract {
         if( !msg.sender.send(bonus) ) {
             throw;
         }
+        
+        winBonus = bonus;
         
         EndGameEvent(msg.sender, bonus, now);
     }
@@ -141,9 +187,9 @@ contract SlotContract {
         else if(kind == 3)
             return 50;
         else if(kind == 2)
-            return 330;
+            return 100;
         else if(kind == 1)
-            return 8888;
+            return 200;
             
         //不應該執行到這邊
         throw;
@@ -151,9 +197,9 @@ contract SlotContract {
     
     //產生隨機三個拉霸圖的位置
     function randomKind () {
-        one = getRandom(45);
-        two = getRandom(45);
-        three = getRandom(45);
+        one = getRandom(8);
+        two = getRandom(8);
+        three = getRandom(8);
 	}
 	
 	//取得1到range範圍的亂數
