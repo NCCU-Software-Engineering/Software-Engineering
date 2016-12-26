@@ -42,7 +42,9 @@ function getWinBonus() {
 var arrow_left = document.getElementById("arrow_left");
 var arrow_right = document.getElementById("arrow_right");
 var btn_spin = document.getElementById("btn_spin");
-var bet = document.getElementById("bet");
+var bet_line = document.getElementById("bet_line");
+var total_bet = document.getElementById("total_bet");
+var player_money = document.getElementById("player_money");
 
 var l0 = document.getElementById("l0");
 var l1 = document.getElementById("l1");
@@ -56,76 +58,96 @@ var r0 = document.getElementById("r0");
 var r1 = document.getElementById("r1");
 var r2 = document.getElementById("r2");
 
-arrow_left.addEventListener("click", Coin_up);
-arrow_right.addEventListener("click", Coin_down);
+arrow_left.addEventListener("click", Coin_down);
+arrow_right.addEventListener("click", Coin_up);
 btn_spin.addEventListener("click", Start);
 
 
-var CoinTime = 0;
+var CoinTime = 10;
 var one, two, three;
 var x = 2, change = 10; 
+var isActive = false;
 
 function Start(){
-	console.log("Start");
-
-	//開始遊戲
-	playGame(10);
-	CoinTime = 0;
 	
-	var lpic = [10];
-	var mpic = [10];
-	var rpic = [10];
-	var i = 0;
-	
-	move();	
+	if(!isActive) {
+		console.log("Start");
+		isActive = true;
+		update();
 		
-
-	
-	//事件監聽(合約沒有)
-	var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
-	event.watch(function(error,result){
-		if(!error){
-			console.log(result);
+		//開始遊戲
+		console.log("playGame" + CoinTime);
+		playGame(CoinTime);
+		
+		var lpic = [10];
+		var mpic = [10];
+		var rpic = [10];
+		var i = 0;
+		
+		move();	
 			
-			//圖片停止
-			one = getOne();
-			two =  getTwo();
-			three = getThree();
-			console.log("one = " + one);
-			console.log("two = " + two);
-			console.log("three = " + three);
-			console.log("winBonus = " + getWinBonus());
-			//重新開始
-		}
-	});
+		//事件監聽(合約沒有)
+		var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
+		event.watch(function(error,result){
+			if(!error){
+				console.log(result);
+				//圖片停止
+				one = getOne();
+				two =  getTwo();
+				three = getThree();
+				console.log("one = " + one);
+				console.log("two = " + two);
+				console.log("three = " + three);
+				console.log("winBonus = " + getWinBonus());
+				update();
+				//重新開始
+				isActive = false;
+				CoinTime = 10;
+			}
+		});
+	}
 }
 
 function move() {
 	
-	l2.src = l1.src;
-	l1.src = l0.src;
-	
-	m2.src = m1.src;
-	m1.src = m0.src;
-	
-	r2.src = r1.src;
-	r1.src = r0.src;
-	
-	setTimeout("move()", 500);
+	if(isActive) {
+		
+		var temp;
+		temp = l2.src;
+		l2.src = l1.src;
+		l1.src = l0.src;
+		l0.src = temp;
+		 
+		temp = m2.src;
+		m2.src = m1.src;
+		m1.src = m0.src;
+		m0.src = temp;
+		 
+		temp = r2.src;
+		r2.src = r1.src;
+		r1.src = r0.src;
+		r0.src = temp;
+		 
+		setTimeout(move, 500);
+	}
 }
 
 function Coin_up(){
 	console.log("Coin_up");
 	if(CoinTime < 50)
 		CoinTime += 10;
-	bet.innerHTML = '2';
+	total_bet.innerHTML = CoinTime;
 }
 function Coin_down(){
 	console.log("Coin_down");
-	if(CoinTime > 0)
+	if(CoinTime > 10)
 		CoinTime -= 10;
-	bet.innerHTML = '2';
+	total_bet.innerHTML = CoinTime;
 }
-function init(){
-	//重置
+function update(){
+	bet_line.innerHTML = getWinBonus();
+	player_money.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether').toFixed(4);
 }
+
+
+
