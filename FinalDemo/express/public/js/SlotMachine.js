@@ -23,7 +23,7 @@ function playGame(CoinTime) {
 	contract.playGame({
 		from: eth.coinbase,
 		value: web3.toWei(CoinTime, 'ether'),
-		gas: 30000000
+		gas: 3000000
 	});
 }
 function getOne() {
@@ -88,10 +88,8 @@ function Start(){
 		
 		//¶}©l¹CÀ¸
 		console.log("playGame:" + CoinTime);
-		reMoney(CoinTime);
 		playGame(CoinTime);
 		
-
 		var i = 0;
 		
 		move1();
@@ -133,7 +131,7 @@ function move1() {
 		l1.src = SetSrc(lpic[(position1)%10]);
 		l2.src = SetSrc(lpic[(position1+1)%10]);
 		 
-		setTimeout(move1, 500);
+		setTimeout(move1, 300);
 	}
 }
 function move2() {
@@ -146,7 +144,7 @@ function move2() {
 		m1.src = SetSrc(mpic[(position2)%10]);
 		m2.src = SetSrc(mpic[(position2+1)%10]);
 		
-		setTimeout(move2, 400);
+		setTimeout(move2, 250);
 	}
 }
 function move3() {
@@ -159,7 +157,7 @@ function move3() {
 		r1.src = SetSrc(rpic[(position3)%10]);
 		r2.src = SetSrc(rpic[(position3+1)%10]);
 		 
-		setTimeout(move3, 300);
+		setTimeout(move3, 200);
 	}
 }
 
@@ -184,9 +182,5 @@ function update(){
 	bet_line.innerHTML = getBonus();
 	player_money.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether').toFixed(3);
 }
-function reMoney(i) {
-	player_money.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether').toFixed(3) - i;
-}
-
 
 
