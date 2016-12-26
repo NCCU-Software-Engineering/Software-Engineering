@@ -4,21 +4,20 @@ contract SlotMachineContract {
     
     // 此合約的擁有者
     address private ownerAddress;
+    mapping (address => uint) private bonusMaping;
     
     uint one;
     uint two;
     uint three;
-    
-    uint winBonus;
     
     //拉霸種類 和對應數字
     //enum  Kind {Cherry, BAR1, BAR2, BAR3, Seven1, Seven3, Money, Crystal, WILD}
     //            9       8     7     6     5       4       3      2        1
     
     //三條拉霸 對應GUI
-    uint[11] Kind1;
-    uint[11] Kind2;
-    uint[11] Kind3;
+    uint[12] Kind1;
+    uint[12] Kind2;
+    uint[12] Kind3;
 
     //亂數種子
     uint private number = 777;
@@ -29,44 +28,46 @@ contract SlotMachineContract {
     //建構子
     function SlotMachineContract() payable {
         ownerAddress = msg.sender;
-        
-        Kind1[0] = 7;
-        Kind1[1] = 1;
-        Kind1[2] = 5;
+        Kind1[0] = 1;
+        Kind1[1] = 5;
+        Kind1[2] = 6;
         Kind1[3] = 2;
-        Kind1[4] = 6;
-        Kind1[5] = 1;
-        Kind1[6] = 3;
-        Kind1[7] = 8;
-        Kind1[8] = 3;
+        Kind1[4] = 9;
+        Kind1[5] = 3;
+        Kind1[6] = 8;
+        Kind1[7] = 4;
+        Kind1[8] = 9;
         Kind1[9] = 7;
         Kind1[10] = 1;
+        Kind1[11] = 5;
         
-        Kind2[0] = 3;
-        Kind2[1] = 4;
-        Kind2[2] = 8;
-        Kind2[3] = 2;
-        Kind2[4] = 7;
-        Kind2[5] = 6;
-        Kind2[6] = 4;
-        Kind2[7] = 5;
-        Kind2[8] = 1;
-        Kind2[9] = 3;
-        Kind2[10] = 4;
+        Kind2[0] = 8;
+        Kind2[1] = 6;
+        Kind2[2] = 2;
+        Kind2[3] = 9;
+        Kind2[4] = 5;
+        Kind2[5] = 1;
+        Kind2[6] = 3;
+        Kind2[7] = 9;
+        Kind2[8] = 7;
+        Kind2[9] = 4;
+        Kind2[10] = 8;
+        Kind2[11] = 6;
         
-        Kind3[0] = 7;
-        Kind3[1] = 4;
+        Kind3[0] = 1;
+        Kind3[1] = 6;
         Kind3[2] = 2;
-        Kind3[3] = 5;
-        Kind3[4] = 8;
-        Kind3[5] = 1;
-        Kind3[6] = 6;
-        Kind3[7] = 8;
-        Kind3[8] = 3;
-        Kind3[9] = 7;
-        Kind3[10] = 4;
-    }   
-        
+        Kind3[3] = 9;
+        Kind3[4] = 7;
+        Kind3[5] = 4;
+        Kind3[6] = 8;
+        Kind3[7] = 5;
+        Kind3[8] = 9;
+        Kind3[9] = 3;
+        Kind3[10] = 1;
+        Kind3[11] = 6;
+    }
+    
     //Owner
     function isOwner() returns (bool) {
         return (msg.sender == ownerAddress);
@@ -96,12 +97,9 @@ contract SlotMachineContract {
 	function getThree() constant returns (uint) {
         return three;
 	}
-
-	function getWinBonus() constant returns (uint) {
-        return winBonus;
+	function getBonus() constant returns (uint) {
+        return bonusMaping[msg.sender];
 	}
-	
-	
 
     //開始遊戲
     function playGame() payable {
@@ -109,7 +107,6 @@ contract SlotMachineContract {
         if(msg.value == 0) {
             throw;
         }
-        
         uint bonus = 0;
 
         randomKind();
@@ -137,11 +134,12 @@ contract SlotMachineContract {
             bonus += countBonus(Kind1[one-1], Kind2[two], Kind3[three+1]);
         }
         
+        bonusMaping[msg.sender] = bonus;
+        
+        
         if( !msg.sender.send(bonus) ) {
             throw;
         }
-        
-        winBonus = bonus;
         
         EndGameEvent(msg.sender, bonus, now);
     }
@@ -187,9 +185,9 @@ contract SlotMachineContract {
         else if(kind == 3)
             return 50;
         else if(kind == 2)
-            return 100;
+            return 330;
         else if(kind == 1)
-            return 200;
+            return 777;
             
         //不應該執行到這邊
         throw;
@@ -197,21 +195,22 @@ contract SlotMachineContract {
     
     //產生隨機三個拉霸圖的位置
     function randomKind () {
-        one = getRandom(8);
-        two = getRandom(8);
-        three = getRandom(8);
+        one = getRandom(10);
+        two = getRandom(10);
+        three = getRandom(10);
 	}
 	
 	//取得1到range範圍的亂數
     function getRandom(uint range) returns (uint) {
-        uint random = (uint(sha256(number))+uint(block.blockhash(block.number-1)))%range;
+        uint random = (uint(sha256(number))%777)+(uint(block.blockhash(block.number-1))%777);
         number += random;
+        random = random % range;
 		return random + 1;
     }
 	
 	//版本號
     function version() constant returns (string){ 
-        return "1.0.4";
+        return "1.0.5";
     }
 	
 	//摧毀合約 取回賭場金錢

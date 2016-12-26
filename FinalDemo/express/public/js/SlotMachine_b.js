@@ -21032,8 +21032,8 @@ var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 var eth = web3.eth;
 
-var abiArray = [{"constant":true,"inputs":[],"name":"getOwnerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getThree","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getWinBonus","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"a","type":"uint256"},{"name":"b","type":"uint256"},{"name":"c","type":"uint256"}],"name":"countBonus","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"kind","type":"uint256"}],"name":"getMagnification","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"destroy","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOne","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"playGame","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"range","type":"uint256"}],"name":"getRandom","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"randomKind","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getTwo","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[],"payable":true,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"bonus","type":"uint256"},{"indexed":false,"name":"timestamp","type":"uint256"}],"name":"EndGameEvent","type":"event"}];
-var contractAddress = "0x776f935b0F79370e12e05A55e3FB9aB62703E1A4";
+var abiArray = [{"constant":true,"inputs":[],"name":"getOwnerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getThree","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"a","type":"uint256"},{"name":"b","type":"uint256"},{"name":"c","type":"uint256"}],"name":"countBonus","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"kind","type":"uint256"}],"name":"getMagnification","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"destroy","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBonus","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOne","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"playGame","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"range","type":"uint256"}],"name":"getRandom","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"randomKind","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getTwo","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[],"payable":true,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"bonus","type":"uint256"},{"indexed":false,"name":"timestamp","type":"uint256"}],"name":"EndGameEvent","type":"event"}];
+var contractAddress = "0x97E7627Ea29f09bBA9A05aA36DBe9BfD9Bb3d694";
 var contract = web3.eth.contract(abiArray).at(contractAddress);
 
 function getOwnerAddress() {
@@ -21064,8 +21064,8 @@ function getTwo() {
 function getThree() {
 	return contract.getThree();
 }
-function getWinBonus() {
-    return contract.getWinBonus();
+function getBonus() {
+    return contract.getBonus();
 }
 
 var arrow_left = document.getElementById("arrow_left");
@@ -21093,9 +21093,17 @@ btn_spin.addEventListener("click", Start);
 
 
 var CoinTime = 10;
-var one, two, three;
+var one = -1, two = -1, three = -1;
 var x = 2, change = 10; 
 var isActive = false;
+
+var lpic = [5, 6, 2, 9, 3, 8, 4, 9, 7, 1];
+var mpic = [6, 2, 9, 5, 1, 3, 9, 7, 4, 8];
+var rpic = [6, 2, 9, 7, 4, 8, 5, 9, 3, 1];
+
+var position1 = 99999;
+var position2 = 99999;
+var position3 = 99999;
 
 function Start(){
 	
@@ -21103,16 +21111,20 @@ function Start(){
 		console.log("Start");
 		isActive = true;
 		update();
+		one = -1;
+		two = -1;
+		three = -1;
 		
 		//�}�l�C��
+		console.log("playGame:" + CoinTime);
 		playGame(CoinTime);
 		
-		var lpic = [10];
-		var mpic = [10];
-		var rpic = [10];
+
 		var i = 0;
 		
-		move();	
+		move1();
+		move2();
+		move3();
 			
 		//�ƥ���ť(�X���S��)
 		var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
@@ -21120,13 +21132,13 @@ function Start(){
 			if(!error){
 				console.log(result);
 				//�Ϥ�����
-				one = getOne();
-				two =  getTwo();
-				three = getThree();
+				one = getOne() - 1;
+				two =  getTwo() - 1;
+				three = getThree() - 1;
 				console.log("one = " + one);
 				console.log("two = " + two);
 				console.log("three = " + three);
-				console.log("winBonus = " + getWinBonus());
+				console.log("winBonus = " + getBonus());
 				update();
 				//���s�}�l
 				isActive = false;
@@ -21136,29 +21148,50 @@ function Start(){
 	}
 }
 
-function move() {
+function move1() {
 	
-	if(isActive) {
+	if(isActive || (position1+1)%10 != one) {
 		
-		var temp;
-		temp = l2.src;
-		l2.src = l1.src;
-		l1.src = l0.src;
-		l0.src = temp;
+		position1 --;
+		
+		l0.src = SetSrc(lpic[(position1-1)%10]);
+		l1.src = SetSrc(lpic[(position1)%10]);
+		l2.src = SetSrc(lpic[(position1+1)%10]);
 		 
-		temp = m2.src;
-		m2.src = m1.src;
-		m1.src = m0.src;
-		m0.src = temp;
-		 
-		temp = r2.src;
-		r2.src = r1.src;
-		r1.src = r0.src;
-		r0.src = temp;
-		 
-		setTimeout(move, 500);
+		setTimeout(move1, 500);
 	}
 }
+function move2() {
+	
+	if(isActive || (position2+1)%10 != two) {
+
+		position2 --;
+	
+		m0.src = SetSrc(mpic[(position2-1)%10]);
+		m1.src = SetSrc(mpic[(position2)%10]);
+		m2.src = SetSrc(mpic[(position2+1)%10]);
+		
+		setTimeout(move2, 400);
+	}
+}
+function move3() {
+	
+	if(isActive || (position3+1)%10 != three) {
+		
+		position3 --;
+		
+		r0.src = SetSrc(rpic[(position3-1)%10]);
+		r1.src = SetSrc(rpic[(position3)%10]);
+		r2.src = SetSrc(rpic[(position3+1)%10]);
+		 
+		setTimeout(move3, 300);
+	}
+}
+
+function SetSrc(i){
+	return "images/game2/Slots/mark" + i + ".png";
+}
+
 
 function Coin_up(){
 	console.log("Coin_up");
@@ -21173,8 +21206,8 @@ function Coin_down(){
 	total_bet.innerHTML = CoinTime;
 }
 function update(){
-	bet_line.innerHTML = getWinBonus();
-	player_money.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether').toFixed(4);
+	bet_line.innerHTML = getBonus();
+	player_money.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether').toFixed(3);
 }
 
 
