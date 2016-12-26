@@ -114,23 +114,23 @@ contract SlotMachineContract {
         //檢查輸贏
         
         //賭一條線 中間條
-        if(msg.value >=10) {
+        if(msg.value >= 10000000000000000000) {
             bonus += countBonus(Kind1[one], Kind2[two], Kind3[three]);
         }
         //賭兩條線 上橫條
-        if(msg.value >=20) {
+        if(msg.value >= 20000000000000000000) {
             bonus += countBonus(Kind1[one-1], Kind2[two-1], Kind3[three-1]);
         }
         //賭三條線 下橫條
-        if(msg.value >=30) {
+        if(msg.value >= 30000000000000000000) {
             bonus += countBonus(Kind1[one+1], Kind2[two+1], Kind3[three+1]);
         }
         //賭四條線 右上左下斜線
-        if(msg.value >=40) {
+        if(msg.value >= 40000000000000000000) {
             bonus += countBonus(Kind1[one+1], Kind2[two], Kind3[three-1]);
         }
         //賭五條線 左上右下斜線
-        if(msg.value >=50) {
+        if(msg.value >= 50000000000000000000) {
             bonus += countBonus(Kind1[one-1], Kind2[two], Kind3[three+1]);
         }
         

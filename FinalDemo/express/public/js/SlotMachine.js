@@ -4,7 +4,7 @@ var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 var eth = web3.eth;
 
 var abiArray = [{"constant":true,"inputs":[],"name":"getOwnerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getThree","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerAddress","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"version","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOwnerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"a","type":"uint256"},{"name":"b","type":"uint256"},{"name":"c","type":"uint256"}],"name":"countBonus","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"kind","type":"uint256"}],"name":"getMagnification","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"destroy","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBonus","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getPlayerMoney","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOne","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"playGame","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"range","type":"uint256"}],"name":"getRandom","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"randomKind","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getTwo","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[],"payable":true,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"bonus","type":"uint256"},{"indexed":false,"name":"timestamp","type":"uint256"}],"name":"EndGameEvent","type":"event"}];
-var contractAddress = "0x97E7627Ea29f09bBA9A05aA36DBe9BfD9Bb3d694";
+var contractAddress = "0x9314E439bF16392Aa3718AA6cFd46B2e4eC4911c";
 var contract = web3.eth.contract(abiArray).at(contractAddress);
 
 function getOwnerAddress() {
@@ -23,7 +23,7 @@ function playGame(CoinTime) {
 	contract.playGame({
 		from: eth.coinbase,
 		value: web3.toWei(CoinTime, 'ether'),
-		gas: 3000000
+		gas: 30000000
 	});
 }
 function getOne() {
@@ -88,6 +88,7 @@ function Start(){
 		
 		//開始遊戲
 		console.log("playGame:" + CoinTime);
+		reMoney(CoinTime);
 		playGame(CoinTime);
 		
 
@@ -98,9 +99,12 @@ function Start(){
 		move3();
 			
 		//事件監聽(合約沒有)
-		var event = contract.EndGameEvent({fromBlock :0,toBlock: 'latest' });
+		var number = web3.eth.blockNumber;
+		console.log("number = " + number);
+		var event = contract.EndGameEvent({from:web3.coinbase},{fromBlock :number,toBlock: 'latest' });
 		event.watch(function(error,result){
 			if(!error){
+				event.stopWatching()
 				console.log(result);
 				//圖片停止
 				one = getOne() - 1;
@@ -121,7 +125,7 @@ function Start(){
 
 function move1() {
 	
-	if(isActive || (position1+1)%10 != one) {
+	if((position1)%10 != one) {
 		
 		position1 --;
 		
@@ -134,7 +138,7 @@ function move1() {
 }
 function move2() {
 	
-	if(isActive || (position2+1)%10 != two) {
+	if((position2)%10 != two) {
 
 		position2 --;
 	
@@ -147,7 +151,7 @@ function move2() {
 }
 function move3() {
 	
-	if(isActive || (position3+1)%10 != three) {
+	if((position3)%10 != three) {
 		
 		position3 --;
 		
@@ -179,6 +183,9 @@ function Coin_down(){
 function update(){
 	bet_line.innerHTML = getBonus();
 	player_money.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether').toFixed(3);
+}
+function reMoney(i) {
+	player_money.innerHTML = web3.fromWei(eth.getBalance(getPlayerAddress()), 'ether').toFixed(3) - i;
 }
 
 
